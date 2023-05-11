@@ -5,9 +5,11 @@ import {
 	NavigationRouteContext,
 } from '@react-navigation/native'
 import { Transaction } from '../../@types/data/Transaction.interface'
-import { Text, IconButton } from 'react-native-paper'
+import { Text } from 'react-native-paper'
 import colors from '../../../colors'
 import { Oswald } from '../../styles/Oswald.font'
+import { StandardScreen } from '../../components/StandardScreen'
+import { StandardHeader } from '../../components/StandardHeader'
 
 interface StatementScreenParams {
 	statement: Transaction[]
@@ -54,6 +56,11 @@ export function StatementScreen() {
 	const [statementToUse, setStatementToUse] = useState<
 		MonthFormattedStatement[]
 	>([])
+
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
 
 	useEffect(() => {
 		statement.forEach((transaction) => {
@@ -128,20 +135,12 @@ export function StatementScreen() {
 	}, [formattedStatement])
 
 	return (
-		<View className='flex-1 items-center justify-between gap-8 px-2 py-4'>
-			<View className='flex-row items-center'>
-				<IconButton
-					icon='keyboard-return'
-					className='absolute w-11 h-11 left-[-160] bg-gray-1'
-					onPress={() => navigator.goBack()}
-				/>
+		<StandardScreen>
+			<StandardHeader noMenu buttonPos={-158}>
+				Extrato
+			</StandardHeader>
 
-				<Text variant='headlineLarge' style={Oswald.regular}>
-					Extrato
-				</Text>
-			</View>
-
-			<View className='flex-1 w-[95%] items-center gap-4'>
+			<View className='flex-1 w-full items-center gap-6'>
 				<View className='w-full items-start'>
 					<Text variant='headlineSmall' style={Oswald.regular}>
 						Saldo Total: R${balance}
@@ -152,7 +151,11 @@ export function StatementScreen() {
 					</Text>
 				</View>
 
-				<Text variant='headlineLarge' style={Oswald.bold}>
+				<Text
+					variant='headlineLarge'
+					className='text-left w-full'
+					style={Oswald.bold}
+				>
 					Histórico
 				</Text>
 
@@ -205,6 +208,6 @@ export function StatementScreen() {
 					})}
 				</ScrollView>
 			</View>
-		</View>
+		</StandardScreen>
 	)
 }

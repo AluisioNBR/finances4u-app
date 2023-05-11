@@ -17,7 +17,7 @@ interface GoalActionModalParams {
 	goalId: string
 	type: 'edit' | 'increment' | 'decrement'
 	setDate: Dispatch<Date>
-	availableBalance?: number
+	getAvailableBalance?: () => number
 	availableIncrement?: number
 }
 
@@ -29,7 +29,7 @@ export function GoalActionModal() {
 		goalId,
 		type,
 		setDate,
-		availableBalance,
+		getAvailableBalance,
 		availableIncrement,
 	} = params as GoalActionModalParams
 	const buttonConfig = {
@@ -38,6 +38,7 @@ export function GoalActionModal() {
 		decrement: { color: 'red', text: 'Retirar' },
 	}
 
+	const [goalData, setGoalData] = useState<Goal>()
 	const [goalName, setGoalName] = useState('')
 	const [goalValue, setGoalValue] = useState('')
 	const [increment, setIncrement] = useState('')
@@ -55,10 +56,13 @@ export function GoalActionModal() {
 	}
 
 	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
 		;(async () => {
 			const { data } = await axios.get<Goal>(
 				`https://finances4u-api.bohr.io/api/user/${userId}/goals/${goalId}`
 			)
+			setGoalData(data)
 			setGoalName(data.name)
 			setGoalValue(`${data.goalValue}`)
 			setCurrentValue(data.currentValue)
@@ -112,7 +116,7 @@ export function GoalActionModal() {
 						}
 						helpMessage={
 							type == 'increment'
-								? `Disponível: R$${availableBalance}`
+								? `Disponível: R$${getAvailableBalance()}`
 								: `Pode retirar até R$${currentValue}`
 						}
 						onChange={(newValue) => setValue(newValue)}
@@ -154,7 +158,8 @@ export function GoalActionModal() {
 									throw new Error('Edit Error')
 								else if (
 									(type != 'edit' && isNaN(parseFloat(value))) ||
-									(type == 'increment' && parseFloat(value) > availableBalance)
+									(type == 'increment' &&
+										parseFloat(value) > getAvailableBalance())
 								)
 									throw new Error('Change Error')
 
@@ -170,7 +175,26 @@ export function GoalActionModal() {
 								if (data) {
 									setDate(new Date())
 									cleanFields()
-									navigator.navigate('LoadingModal', { redirect: 'Home' })
+									navigator.navigate('LoadingModal', {
+										redirect: 'GoalDetails',
+										routeParams: {
+											userId: goalData.owner,
+											goalId: goalData._id,
+											getAvailableBalance: getAvailableBalance,
+										},
+										title:
+											type == 'edit'
+												? 'Salvando...'
+												: type == 'increment'
+												? 'Adicionando...'
+												: 'Retirando...',
+										barColor:
+											type == 'edit'
+												? 'blue'
+												: type == 'increment'
+												? 'green'
+												: 'red',
+									})
 								}
 							} catch (error) {
 								if (type == 'edit')

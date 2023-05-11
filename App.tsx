@@ -1,4 +1,6 @@
+import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
 	DefaultTheme,
@@ -33,7 +35,10 @@ import { LoadingModal } from './src/screens/LoadingModal/LoadingModal'
 import { GoalActionModal } from './src/screens/GoalActionModal/GoalActionModal'
 import { ConfirmGoalDeleteModal } from './src/screens/ConfirmGoalDeletionModal/ConfirmGoalDeleteModal'
 import { MenuDrawer } from './src/components/MenuDrawer'
+import { BlocksEditModal } from './src/screens/BlocksEditModal/BlocksEditModal'
+import { SettingsModal } from './src/screens/SettingsModal/SettingsModal'
 
+const Drawer = createDrawerNavigator()
 const Stack = createNativeStackNavigator()
 
 export const useAppTheme = () => useTheme<typeof DefaultTheme>()
@@ -63,48 +68,74 @@ export default function App() {
 	return (
 		<PaperProvider theme={DefaultTheme}>
 			<NavigationContainer>
-				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					<Stack.Group>
-						<Stack.Screen name='Start' component={StartScreen} />
-						<Stack.Screen name='Home' component={HomeScreen} />
-						<Stack.Screen name='GoalDetails' component={GoalDetailsScreen} />
-						<Stack.Screen name='Statement' component={StatementScreen} />
-						<Stack.Screen name='Blocks' component={BlocksScreen} />
-						<Stack.Screen name='Settings' component={SettingsScreen} />
-						<Stack.Screen name='Support' component={SupportScreen} />
-						<Stack.Screen name='Sugestions' component={SugestionsScreen} />
-						<Stack.Screen name='About' component={AboutScreen} />
-					</Stack.Group>
-					<Stack.Group screenOptions={{ presentation: 'modal' }}>
-						<Stack.Screen name='SignUp' component={SignUpScreen} />
-						<Stack.Screen name='SignIn' component={SignInScreen} />
-						<Stack.Screen name='GoalCreation' component={GoalCreationScreen} />
-						<Stack.Screen name='LoadingModal' component={LoadingModal} />
-					</Stack.Group>
-					<Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
-						<Stack.Screen
-							name='HomeActionModal'
-							initialParams={{
-								label1: 'Dê um nome para seu bloqueio',
-								label2: 'Quanto irá bloquear ?',
-								showAvailableBalance: true,
-								type: 'block',
-							}}
-							component={HomeActionModal}
-						/>
-						<Stack.Screen name='GoalActionModal' component={GoalActionModal} />
-						<Stack.Screen
-							name='ConfirmGoalDeleteModal'
-							component={ConfirmGoalDeleteModal}
-						/>
-						<Stack.Screen
-							name='MenuDrawer'
-							navigationKey='MenuDrawer'
-							component={MenuDrawer}
-						/>
-					</Stack.Group>
-				</Stack.Navigator>
+				<DrawerNav />
 			</NavigationContainer>
 		</PaperProvider>
+	)
+}
+
+function DrawerNav() {
+	return (
+		<Drawer.Navigator
+			id='MenuDrawer'
+			screenOptions={{ headerShown: false }}
+			drawerContent={(props) => <MenuDrawer {...props} />}
+		>
+			<Drawer.Screen name='StackNav' component={StackNav} />
+			<Drawer.Screen name='Início' component={HomeScreen} />
+			<Drawer.Screen name='Bloqueios' component={BlocksScreen} />
+			<Drawer.Screen name='Configurações' component={SettingsScreen} />
+			<Drawer.Screen name='Suporte' component={SupportScreen} />
+			<Drawer.Screen name='Sugestão' component={SugestionsScreen} />
+			<Drawer.Screen name='Sobre' component={AboutScreen} />
+			<Stack.Screen name='LoadingModal' component={LoadingModal} />
+		</Drawer.Navigator>
+	)
+}
+
+function StackNav() {
+	return (
+		<Stack.Navigator
+			id='Default'
+			initialRouteName='Start'
+			screenOptions={{ headerShown: false }}
+		>
+			<Stack.Group>
+				<Stack.Screen name='Start' component={StartScreen} />
+				<Stack.Screen name='Home' component={HomeScreen} />
+				<Stack.Screen name='GoalDetails' component={GoalDetailsScreen} />
+				<Stack.Screen name='Statement' component={StatementScreen} />
+				<Stack.Screen name='Blocks' component={BlocksScreen} />
+				<Stack.Screen name='Settings' component={SettingsScreen} />
+				<Stack.Screen name='Support' component={SupportScreen} />
+				<Stack.Screen name='Sugestions' component={SugestionsScreen} />
+				<Stack.Screen name='About' component={AboutScreen} />
+			</Stack.Group>
+			<Stack.Group screenOptions={{ presentation: 'modal' }}>
+				<Stack.Screen name='SignUp' component={SignUpScreen} />
+				<Stack.Screen name='SignIn' component={SignInScreen} />
+				<Stack.Screen name='GoalCreation' component={GoalCreationScreen} />
+				<Stack.Screen name='LoadingModal' component={LoadingModal} />
+			</Stack.Group>
+			<Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+				<Stack.Screen
+					name='HomeActionModal'
+					initialParams={{
+						label1: 'Dê um nome para seu bloqueio',
+						label2: 'Quanto irá bloquear ?',
+						showAvailableBalance: true,
+						type: 'block',
+					}}
+					component={HomeActionModal}
+				/>
+				<Stack.Screen name='GoalActionModal' component={GoalActionModal} />
+				<Stack.Screen
+					name='ConfirmGoalDeleteModal'
+					component={ConfirmGoalDeleteModal}
+				/>
+				<Stack.Screen name='BlocksEdit' component={BlocksEditModal} />
+				<Stack.Screen name='SettingsModal' component={SettingsModal} />
+			</Stack.Group>
+		</Stack.Navigator>
 	)
 }

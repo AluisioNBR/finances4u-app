@@ -4,17 +4,18 @@ import { useCallback, useContext, useEffect } from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { BigGreenButton } from '../../components/BigGreenButton'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Oswald } from '../../styles/Oswald.font'
+import { StandardScreen } from '../../components/StandardScreen'
+import { userInfo } from '../../components/userInfo'
 
 export function StartScreen() {
 	const navigator = useContext(NavigationContext)
 
 	useEffect(() => {
-		;(async () => {
-			const userId = await AsyncStorage.getItem('userId')
-			if (userId != null) navigator.navigate('Home')
-		})()
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+
+		if (userInfo.userId != '') navigator.navigate('Home')
 	}, [])
 
 	const goToSignIn = useCallback(() => {
@@ -26,12 +27,12 @@ export function StartScreen() {
 	}, [])
 
 	return (
-		<View className='flex-1 items-center justify-evenly'>
+		<StandardScreen pos='center'>
 			<StatusBar
 				hideTransitionAnimation='slide'
 				hidden={true}
 				animated={true}
-				style='auto'
+				style='inverted'
 			/>
 			<Text
 				variant='displayMedium'
@@ -43,7 +44,7 @@ export function StartScreen() {
 
 			<View className='w-[231px] h-[236px] justify-between'>
 				<Text
-					variant='headlineLarge'
+					variant='headlineMedium'
 					className='text-center'
 					style={Oswald.regular}
 				>
@@ -54,6 +55,6 @@ export function StartScreen() {
 
 				<BigGreenButton onPress={goToSignUp}>Cadastrar</BigGreenButton>
 			</View>
-		</View>
+		</StandardScreen>
 	)
 }

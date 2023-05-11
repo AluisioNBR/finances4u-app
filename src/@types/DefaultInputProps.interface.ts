@@ -5,4 +5,7 @@ export interface DefaultInputProps {
 	onChange: (newValue: string) => void
 	required?: boolean
 	helpMessage?: string
+	height?: string | number
+	rounded?: number
+	multiline?: boolean
 }

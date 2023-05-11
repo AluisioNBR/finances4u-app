@@ -14,6 +14,8 @@ import axios from 'axios'
 import { Goal } from '../../@types/data/Goal.interface'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import { Oswald } from '../../styles/Oswald.font'
+import { StandardScreen } from '../../components/StandardScreen'
+import { StandardHeader } from '../../components/StandardHeader'
 
 interface GoalCreationParams {
 	userId: string
@@ -35,6 +37,11 @@ export function GoalCreationScreen() {
 	const { userId, availableBalance, availableIncrementRate, setDate } =
 		params as GoalCreationParams
 
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
+
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -50,7 +57,7 @@ export function GoalCreationScreen() {
 
 	const uploadImage = async (goalId: string) => {
 		try {
-			const response = await FileSystem.uploadAsync(
+			await FileSystem.uploadAsync(
 				`https://finances4u-api.bohr.io/api/user/${userId}/goals/${goalId}/goalPic/`,
 				goalPic,
 				{
@@ -77,17 +84,10 @@ export function GoalCreationScreen() {
 
 	return (
 		<ScrollView>
-			<View className='flex-1 justify-start gap-8 px-4 py-2'>
-				<View className='w-full flex-row items-center justify-between py-8'>
-					<IconButton
-						icon='keyboard-return'
-						className='absolute bg-gray-1 w-11 h-11'
-						onPress={() => {
-							navigator.goBack()
-							cleanFields()
-						}}
-					/>
-				</View>
+			<StandardScreen>
+				<StandardHeader noMenu buttonPos={-200}>
+					{''}
+				</StandardHeader>
 
 				<DefaultInput
 					label='Qual o nome da sua meta ?'
@@ -206,7 +206,7 @@ export function GoalCreationScreen() {
 						Criar Meta
 					</CustomBigButton>
 				</View>
-			</View>
+			</StandardScreen>
 		</ScrollView>
 	)
 }

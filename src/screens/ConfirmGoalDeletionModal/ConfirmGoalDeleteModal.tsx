@@ -12,7 +12,7 @@ import axios from 'axios'
 
 interface ConfirmGoalDeleteModalParams {
 	goal: Goal
-	setDate: Dispatch<Date>
+	setDateHome: Dispatch<Date>
 }
 
 export function ConfirmGoalDeleteModal() {
@@ -22,7 +22,12 @@ export function ConfirmGoalDeleteModal() {
 
 	const navigator = useContext(NavigationContext)
 	const route = useContext(NavigationRouteContext)
-	const { goal, setDate } = route.params as ConfirmGoalDeleteModalParams
+	const { goal, setDateHome } = route.params as ConfirmGoalDeleteModalParams
+
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
 
 	useEffect(() => {
 		;(async () => {
@@ -83,8 +88,12 @@ export function ConfirmGoalDeleteModal() {
 										`https://finances4u-api.bohr.io/api/user/${goal.owner}/goals/${goal._id}/delete`
 									)
 									if (data) {
-										setDate(new Date())
-										navigator.navigate('LoadingModal', { redirect: 'Home' })
+										setDateHome(new Date())
+										navigator.navigate('LoadingModal', {
+											redirect: 'Home',
+											title: 'Deletando...',
+											barColor: 'red',
+										})
 									}
 								})()
 						}}

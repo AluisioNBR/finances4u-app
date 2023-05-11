@@ -1,4 +1,4 @@
-import { useState, Dispatch } from 'react'
+import { useState, useEffect, Dispatch } from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import {
@@ -30,6 +30,11 @@ export function HomeActionModal() {
 		receive: { color: 'green', text: 'Adicionar' },
 		pay: { color: 'red', text: 'Pagar' },
 	}
+
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
 
 	const [input1, setInput1] = useState('')
 	const [input2, setInput2] = useState('')
@@ -113,7 +118,17 @@ export function HomeActionModal() {
 								if (data) {
 									setDate(new Date())
 									setError('')
-									navigator.navigate('LoadingModal', { redirect: 'Home' })
+									navigator.navigate('LoadingModal', {
+										redirect: 'Home',
+										title:
+											type == 'block'
+												? 'Criando'
+												: type == 'receive'
+												? 'Adicionando'
+												: 'Pagando',
+										barColor:
+											type == 'block' || type == 'receive' ? 'green' : 'red',
+									})
 								}
 							} catch (error) {
 								setError(

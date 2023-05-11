@@ -27,8 +27,13 @@ export function DefaultInput(props: DefaultInputProps) {
 			<TextInput
 				inputMode='text'
 				mode='outlined'
+				multiline={props.multiline ? true : false}
+				contentStyle={props.height ? { height: props.height } : {}}
 				outlineStyle={[
-					{ borderRadius: 75, borderColor: colors.green[2] },
+					{
+						borderRadius: props.rounded ? props.rounded : 75,
+						borderColor: colors.green[2],
+					},
 					isFocus ? { borderWidth: 3 } : { borderWidth: 4 },
 				]}
 				label={labelVisibility ? '' : Label}
@@ -41,7 +46,7 @@ export function DefaultInput(props: DefaultInputProps) {
 					setLabelVisibility(true)
 				}}
 				onChangeText={(text) => props.onChange(text)}
-				style={Oswald.regular}
+				style={[Oswald.regular, { flexWrap: 'wrap' }]}
 				className={`w-full text-[16px] bg-white`}
 				value={props.children}
 			/>

@@ -1,21 +1,25 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContext } from '@react-navigation/native'
 import axios from 'axios'
-import { StatusBar } from 'expo-status-bar'
 import { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
-import { Text, IconButton } from 'react-native-paper'
 import { BigGreenButton } from '../../components/BigGreenButton'
 import { DefaultInput } from '../../components/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { User } from '../../@types/data/User.interface'
-import { Oswald } from '../../styles/Oswald.font'
+import { StandardScreen } from '../../components/StandardScreen'
+import { StandardHeader } from '../../components/StandardHeader'
+import { userInfo } from '../../components/userInfo'
 
 export function SignInScreen() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [passwordEncrypted, setPasswordEncrypted] = useState('')
 	const navigator = useContext(NavigationContext)
+
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
 
 	const cleanFields = () => {
 		setUsername('')
@@ -27,8 +31,12 @@ export function SignInScreen() {
 			const { data } = await axios.post<User>(
 				`https://finances4u-api.bohr.io/api/signin?username=${username}&password=${password}`
 			)
-			await AsyncStorage.setItem('userId', data._id)
-			navigator.navigate('Home')
+			navigator.navigate('LoadingModal', {
+				redirect: 'Home',
+				title: 'Logando...',
+				duration: 5000,
+			})
+			await userInfo.setUserId(data._id)
 			cleanFields()
 		} catch (error) {
 			console.log(error)
@@ -42,24 +50,12 @@ export function SignInScreen() {
 	}, [password])
 
 	return (
-		<View className='flex-1 items-center justify-between gap-8 px-2 py-4'>
-			<StatusBar style='inverted' />
-			<View className='flex-row items-center'>
-				<IconButton
-					icon='keyboard-return'
-					className='absolute left-[-160px] bg-gray-1 w-11 h-11'
-					onPress={() => {
-						navigator.goBack()
-						cleanFields()
-					}}
-				/>
+		<StandardScreen pos='between'>
+			<StandardHeader noMenu buttonPos={-170} callback={cleanFields}>
+				Login
+			</StandardHeader>
 
-				<Text variant='headlineLarge' style={Oswald.regular}>
-					Login
-				</Text>
-			</View>
-
-			<KeyboardAvoidingView className='w-[85%] h-[200px] justify-between'>
+			<KeyboardAvoidingView className='w-full h-[200px] justify-between'>
 				<DefaultInput
 					label='Nome de Usuário'
 					required
@@ -86,7 +82,7 @@ export function SignInScreen() {
 				</DefaultInput>
 			</KeyboardAvoidingView>
 
-			<View className='justify-between gap-8 w-[85%] h-32'>
+			<View className='items-center justify-between w-full h-32'>
 				<BigGreenButton onPress={signIn}>Login</BigGreenButton>
 
 				<NavLink
@@ -98,6 +94,6 @@ export function SignInScreen() {
 					Não possui uma conta ? Cadastre-se aqui!
 				</NavLink>
 			</View>
-		</View>
+		</StandardScreen>
 	)
 }

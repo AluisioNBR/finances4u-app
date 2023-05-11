@@ -1,14 +1,15 @@
 import { NavigationContext } from '@react-navigation/native'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StatusBar } from 'expo-status-bar'
 import { useContext, useState, useEffect } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
-import { Text, IconButton } from 'react-native-paper'
 import { BigGreenButton } from '../../components/BigGreenButton'
 import { DefaultInput } from '../../components/DefaultInput'
 import { NavLink } from '../../components/NavLink'
+import { StandardScreen } from '../../components/StandardScreen'
+import { StandardHeader } from '../../components/StandardHeader'
+import { Text } from 'react-native-paper'
 import { Oswald } from '../../styles/Oswald.font'
+import { userInfo } from '../../components/userInfo'
 
 export function SignUpScreen() {
 	const [username, setUsername] = useState('')
@@ -17,28 +18,39 @@ export function SignUpScreen() {
 	const [passwordEncrypted, setPasswordEncrypted] = useState('')
 	const [passwordConfirm, setPasswordConfirm] = useState('')
 	const [passwordConfirmEncrypted, setPasswordConfirmEncrypted] = useState('')
+	const [error, setError] = useState('')
 	const navigator = useContext(NavigationContext)
+
+	useEffect(() => {
+		// @ts-ignore
+		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
 
 	const cleanFields = () => {
 		setUsername('')
 		setEmail('')
 		setPassword('')
 		setPasswordConfirm('')
+		setError('')
 	}
 
 	const signUp = async () => {
 		try {
 			if (password != passwordConfirm)
-				throw new Error('Password are different!')
+				throw new Error('As senhas estão diferentes!')
 
 			const { data } = await axios.post(
 				`https://finances4u-api.bohr.io/api/signup?username=${username}&email=${email}&password=${password}`
 			)
-			await AsyncStorage.setItem('userId', data._id)
-			navigator.navigate('Home')
+			navigator.navigate('LoadingModal', {
+				redirect: 'Home',
+				title: 'Cadastrando...',
+				duration: 5000,
+			})
+			await userInfo.setUserId(data._id)
 			cleanFields()
 		} catch (error) {
-			console.log(error)
+			setError(error.message)
 		}
 	}
 
@@ -55,26 +67,14 @@ export function SignUpScreen() {
 	}, [passwordConfirm])
 
 	return (
-		<View className='flex-1 items-center justify-between gap-8 px-2 py-4'>
-			<StatusBar style='inverted' />
-			<View className='flex-row items-center'>
-				<IconButton
-					icon='keyboard-return'
-					className='absolute left-[-140px] bg-gray-1 w-11 h-11'
-					onPress={() => {
-						navigator.goBack()
-						cleanFields()
-					}}
-				/>
-
-				<Text variant='headlineLarge' style={Oswald.regular}>
-					Cadastro
-				</Text>
-			</View>
+		<StandardScreen pos='between'>
+			<StandardHeader noMenu callback={cleanFields} buttonPos={-150}>
+				Cadastro
+			</StandardHeader>
 
 			<KeyboardAvoidingView
 				behavior='padding'
-				className='w-[85%] h-[500px] justify-between'
+				className='w-full h-[500px] justify-between'
 			>
 				<DefaultInput
 					label='Nome de Usuário'
@@ -125,9 +125,15 @@ export function SignUpScreen() {
 				>
 					{passwordConfirmEncrypted}
 				</DefaultInput>
+
+				{!error ? null : (
+					<Text className='text-xl text-red-1' style={Oswald.regular}>
+						{error}
+					</Text>
+				)}
 			</KeyboardAvoidingView>
 
-			<View className='justify-between gap-8 w-[85%] h-32'>
+			<View className='justify-between w-full h-32'>
 				<BigGreenButton onPress={signUp}>Cadastro</BigGreenButton>
 
 				<NavLink
@@ -139,6 +145,6 @@ export function SignUpScreen() {
 					Já possui uma conta ? Faça login aqui!
 				</NavLink>
 			</View>
-		</View>
+		</StandardScreen>
 	)
 }

@@ -18,10 +18,10 @@ interface GoalsViewerProps {
 export function GoalsViewer(props: GoalsViewerProps) {
 	const listGoals = props.children.map((goal) => (
 		<GoalButton
+			setDate={props.setDate}
 			key={goal.name}
 			getAvailableBalance={props.getAvailableBalance}
 			incrementRateAvailable={props.user.incrementRateAvailable}
-			setDate={props.setDate}
 		>
 			{goal}
 		</GoalButton>
@@ -61,10 +61,11 @@ function GoalButton(props: GoalButtonProps) {
 		<TouchableWithoutFeedback
 			onPress={() =>
 				navigator.navigate('GoalDetails', {
-					goal: props.children,
+					userId: props.children.owner,
+					goalId: props.children._id,
 					icrementRateAvailable: props.incrementRateAvailable,
 					getAvailableBalance: props.getAvailableBalance,
-					setDate: props.setDate,
+					setDateHome: props.setDate,
 				})
 			}
 			onPressIn={() => setButtonColor(colors.green[4])}
