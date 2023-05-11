@@ -1,12 +1,7 @@
 import { Button } from 'react-native-paper'
-import colors from '../../colors'
-import { Oswald } from '../styles/Oswald.font'
-
-interface LittleBlueButtonProps {
-	children: string
-	onPress: () => void
-	width?: number | string
-}
+import colors from '../../../colors'
+import { Oswald } from '../../styles/Oswald.font'
+import { LittleBlueButtonProps } from './types/LittleBlueButtonProps.interface'
 
 export function LittleBlueButton(props: LittleBlueButtonProps) {
 	return (

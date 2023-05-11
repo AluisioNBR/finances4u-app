@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { ActionButtonProps } from '../../../components/ActionButtonsContainer'
+import { ActionButtonProps } from '../../../components/ActionButtons/ActionButtonsContainer'
 
 export function HomeActionButtons(
 	userId: string,

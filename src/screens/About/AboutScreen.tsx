@@ -3,10 +3,10 @@ import { View, Linking } from 'react-native'
 import { Text } from 'react-native-paper'
 import { Oswald } from '../../styles/Oswald.font'
 import { NavigationContext } from '@react-navigation/native'
-import { LittleBlueButton } from '../../components/LittleBlueButton'
+import { LittleBlueButton } from '../../components/LittleBlueButton/LittleBlueButton'
 import appConfig from '../../../app.json'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 
 export function AboutScreen() {
 	const navigator = useContext(NavigationContext)

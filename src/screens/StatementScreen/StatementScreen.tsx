@@ -9,7 +9,7 @@ import { Text } from 'react-native-paper'
 import colors from '../../../colors'
 import { Oswald } from '../../styles/Oswald.font'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 
 interface StatementScreenParams {
 	statement: Transaction[]

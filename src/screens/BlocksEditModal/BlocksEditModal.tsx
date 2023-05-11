@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native'
 import { useContext } from 'react'
 import { CustomBigButton } from '../../components/CustomBigButton'
-import { DefaultInput } from '../../components/DefaultInput'
+import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import axios from 'axios'
 import { Oswald } from '../../styles/Oswald.font'
 import { Block } from '../../@types/data/Block.interface'

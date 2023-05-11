@@ -8,13 +8,13 @@ import {
 import { Divider, IconButton, Text } from 'react-native-paper'
 import Animated, { SlideInUp, SlideOutDown } from 'react-native-reanimated'
 import { Oswald } from '../../styles/Oswald.font'
-import { DefaultInput } from '../../components/DefaultInput'
+import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import { Doubt } from '../../@types/data/Doubt.interface'
 import axios from 'axios'
 import { NavigationContext } from '@react-navigation/native'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { userInfo } from '../../components/userInfo'
 
 export function SupportScreen() {

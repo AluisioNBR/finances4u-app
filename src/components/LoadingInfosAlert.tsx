@@ -2,11 +2,7 @@ import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { Oswald } from '../styles/Oswald.font'
 
-interface LoadingInfosAlertProps {
-	children: string
-}
-
-export function LoadingInfosAlert(props: LoadingInfosAlertProps) {
+export function LoadingInfosAlert(props: { children: string }) {
 	return (
 		<View className='flex-1 items-center justify-center'>
 			<Text

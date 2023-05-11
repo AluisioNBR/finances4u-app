@@ -1,7 +1,6 @@
 import { Text } from 'react-native-paper'
 import { Pressable } from 'react-native'
 import { ButtonProps } from '../@types/ButtonProps.interface'
-import colors from '../../colors'
 
 import Animated, {
 	interpolateColor,
@@ -10,24 +9,11 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated'
 import { Oswald } from '../styles/Oswald.font'
+import { buttonColors } from './buttonColors'
 
 const AnimatedButton = Animated.createAnimatedComponent(Pressable)
 
 export function CustomBigButton(props: ButtonProps) {
-	const buttonColors = {
-		standart: {
-			blue: colors.blue[2],
-			green: colors.green[3],
-			red: colors.red[3],
-		},
-
-		active: {
-			blue: colors.blue[1],
-			green: colors.green[2],
-			red: colors.red[2],
-		},
-	}
-
 	const buttonColor = useSharedValue(0)
 	const pressIn = () => {
 		if (callbackWasInformed(props.onPressIn)) props.onPressIn()

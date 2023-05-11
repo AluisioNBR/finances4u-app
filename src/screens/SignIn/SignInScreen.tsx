@@ -3,11 +3,11 @@ import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
 import { BigGreenButton } from '../../components/BigGreenButton'
-import { DefaultInput } from '../../components/DefaultInput'
+import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { User } from '../../@types/data/User.interface'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { userInfo } from '../../components/userInfo'
 
 export function SignInScreen() {

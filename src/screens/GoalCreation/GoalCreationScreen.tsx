@@ -5,7 +5,7 @@ import {
 import { useContext, useEffect, useState, Dispatch } from 'react'
 import { View, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
-import { DefaultInput } from '../../components/DefaultInput'
+import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 import colors from '../../../colors'
@@ -15,7 +15,7 @@ import { Goal } from '../../@types/data/Goal.interface'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import { Oswald } from '../../styles/Oswald.font'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 
 interface GoalCreationParams {
 	userId: string

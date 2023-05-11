@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { DefaultInput } from '../../components/DefaultInput'
+import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { useState, useEffect, useContext, Dispatch } from 'react'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import {

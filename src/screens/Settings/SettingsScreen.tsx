@@ -16,8 +16,8 @@ import Animated, {
 import { NavigationContext } from '@react-navigation/native'
 import { LoadingInfosAlert } from '../../components/LoadingInfosAlert'
 import { StandardScreen } from '../../components/StandardScreen'
-import { StandardHeader } from '../../components/StandardHeader'
-import { UploadImgButton } from '../../components/UploadImgButton'
+import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
+import { UploadImgButton } from '../../components/UploadImgButton/UploadImgButton'
 import { userInfo } from '../../components/userInfo'
 
 interface DateContextInterface {

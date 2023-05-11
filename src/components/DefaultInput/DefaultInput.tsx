@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { View } from 'react-native'
 import { Text, TextInput } from 'react-native-paper'
-import { DefaultInputProps } from '../@types/DefaultInputProps.interface'
-import { Oswald } from '../styles/Oswald.font'
-import colors from '../../colors'
+import { DefaultInputProps } from './types/DefaultInputProps.interface'
+import { Oswald } from '../../styles/Oswald.font'
+import colors from '../../../colors'
 
 export function DefaultInput(props: DefaultInputProps) {
 	const [labelVisibility, setLabelVisibility] = useState(true)
