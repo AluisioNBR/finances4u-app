@@ -1,5 +1,4 @@
 import { NavigationContext } from '@react-navigation/native'
-import axios from 'axios'
 import { useContext, useState, useEffect } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
 import { BigGreenButton } from '../../components/BigGreenButton'
@@ -7,9 +6,10 @@ import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-import { Text } from 'react-native-paper'
-import { Oswald } from '../../styles/Oswald.font'
 import { userInfo } from '../../components/userInfo'
+import { signUp } from './functions/signUp'
+import { ErrorMsg } from '../../components/ErrorMsg'
+import { passwordEncrypter } from '../../components/passwordEncrypter'
 
 export function SignUpScreen() {
 	const [username, setUsername] = useState('')
@@ -34,24 +34,9 @@ export function SignUpScreen() {
 		setError('')
 	}
 
-	const signUp = async () => {
-		try {
-			if (password != passwordConfirm)
-				throw new Error('As senhas estão diferentes!')
-
-			const { data } = await axios.post(
-				`https://finances4u-api.bohr.io/api/signup?username=${username}&email=${email}&password=${password}`
-			)
-			navigator.navigate('LoadingModal', {
-				redirect: 'Home',
-				title: 'Cadastrando...',
-				duration: 5000,
-			})
-			await userInfo.setUserId(data._id)
-			cleanFields()
-		} catch (error) {
-			setError(error.message)
-		}
+	const goToSignIn = () => {
+		navigator.navigate('SignIn')
+		cleanFields()
 	}
 
 	useEffect(() => {
@@ -96,14 +81,7 @@ export function SignUpScreen() {
 					label='Senha'
 					required
 					onChange={(newText) =>
-						setPassword((prevState) => {
-							let finalPassword = ''
-							for (const iterator of newText) {
-								if (iterator == '*') continue
-								finalPassword = prevState + iterator
-							}
-							return finalPassword
-						})
+						setPassword((prevState) => passwordEncrypter(prevState, newText))
 					}
 				>
 					{passwordEncrypted}
@@ -113,35 +91,36 @@ export function SignUpScreen() {
 					label='Repita sua Senha'
 					required
 					onChange={(newText) =>
-						setPasswordConfirm((prevState) => {
-							let finalPassword = ''
-							for (const iterator of newText) {
-								if (iterator == '*') continue
-								finalPassword = prevState + iterator
-							}
-							return finalPassword
-						})
+						setPasswordConfirm((prevState) =>
+							passwordEncrypter(prevState, newText)
+						)
 					}
 				>
 					{passwordConfirmEncrypted}
 				</DefaultInput>
 
-				{!error ? null : (
-					<Text className='text-xl text-red-1' style={Oswald.regular}>
-						{error}
-					</Text>
-				)}
+				<ErrorMsg>{error}</ErrorMsg>
 			</KeyboardAvoidingView>
 
 			<View className='justify-between w-full h-32'>
-				<BigGreenButton onPress={signUp}>Cadastro</BigGreenButton>
-
-				<NavLink
-					onPress={() => {
-						navigator.navigate('SignIn')
-						cleanFields()
-					}}
+				<BigGreenButton
+					onPress={async () =>
+						await signUp(
+							username,
+							email,
+							password,
+							passwordConfirm,
+							cleanFields,
+							userInfo.setUserId,
+							setError,
+							navigator
+						)
+					}
 				>
+					Cadastro
+				</BigGreenButton>
+
+				<NavLink onPress={goToSignIn}>
 					Já possui uma conta ? Faça login aqui!
 				</NavLink>
 			</View>

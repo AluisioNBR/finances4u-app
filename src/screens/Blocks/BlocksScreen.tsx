@@ -1,10 +1,7 @@
-import { useEffect, useState, Dispatch, useCallback, useContext } from 'react'
-import { View, ScrollView } from 'react-native'
-import { Text } from 'react-native-paper'
-import { Oswald } from '../../styles/Oswald.font'
+import { useEffect, useState, useCallback, useContext } from 'react'
+import { ScrollView } from 'react-native'
 import { Block } from '../../@types/data/Block.interface'
 import axios from 'axios'
-import { LittleBlueButton } from '../../components/LittleBlueButton/LittleBlueButton'
 import { User } from '../../@types/data/User.interface'
 import { Transaction } from '../../@types/data/Transaction.interface'
 import { Goal } from '../../@types/data/Goal.interface'
@@ -12,6 +9,7 @@ import { NavigationContext } from '@react-navigation/native'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { userInfo } from '../../components/userInfo'
+import { BlockComponent } from './components/BlockComponent'
 
 export function BlocksScreen() {
 	const navigator = useContext(NavigationContext)
@@ -24,6 +22,9 @@ export function BlocksScreen() {
 	useEffect(() => {
 		// @ts-ignore
 		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: true })
+	}, [])
+
+	useEffect(() => {
 		;(async () => {
 			const blocksData = await axios.get<Block[]>(
 				`https://finances4u-api.bohr.io/api/user/${userInfo.userId}/blocks`
@@ -83,78 +84,4 @@ export function BlocksScreen() {
 			</ScrollView>
 		</StandardScreen>
 	)
-}
-
-interface BlockComponentProps {
-	getAvailableBalance: () => void
-	setDate: Dispatch<Date>
-	children: string
-	value: number
-	owner: string
-	id: string
-	canEdit: boolean
-}
-
-function BlockComponent(props: BlockComponentProps) {
-	const navigator = useContext(NavigationContext)
-	return (
-		<View className='w-full flex-row items-center justify-between mb-2 py-2'>
-			<View>
-				<Text variant='titleLarge' style={Oswald.regular}>
-					{props.children}
-				</Text>
-				<Text variant='titleMedium' style={Oswald.regular}>
-					R${props.value}
-				</Text>
-			</View>
-
-			<View
-				className='w-52 flex-row'
-				style={
-					props.canEdit
-						? { justifyContent: 'space-between' }
-						: { justifyContent: 'flex-end' }
-				}
-			>
-				{props.canEdit ? (
-					<LittleBlueButton
-						onPress={() =>
-							navigator.navigate('BlocksEdit', {
-								userId: props.owner,
-								blockId: props.id,
-								blockName: props.children,
-								blockValue: props.value,
-								setDate: props.setDate,
-								availableBalance: props.getAvailableBalance(),
-							})
-						}
-						width={90}
-					>
-						Editar
-					</LittleBlueButton>
-				) : null}
-
-				<LittleBlueButton
-					onPress={async () => {
-						navigator.navigate('LoadingModal', {
-							redirect: 'Blocks',
-							title: 'Cancelando...',
-							barColor: 'red',
-						})
-						await deleteBlock(props.id, props.owner, props.setDate)
-					}}
-					width={90}
-				>
-					Cancelar
-				</LittleBlueButton>
-			</View>
-		</View>
-	)
-}
-
-async function deleteBlock(id: string, owner: string, setDate: Dispatch<Date>) {
-	const { data } = await axios.delete<Block>(
-		`https://finances4u-api.bohr.io/api/user/${owner}/blocks/${id}/cancel`
-	)
-	if (data._id == id) setDate(new Date())
 }

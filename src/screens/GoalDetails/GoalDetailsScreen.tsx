@@ -3,7 +3,7 @@ import {
 	NavigationRouteContext,
 	useFocusEffect,
 } from '@react-navigation/native'
-import { Dispatch, useContext, useState, useEffect, useCallback } from 'react'
+import { useContext, useState, useEffect, useCallback } from 'react'
 import { BackHandler, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { Goal } from '../../@types/data/Goal.interface'
@@ -19,13 +19,8 @@ import { LoadingInfosAlert } from '../../components/LoadingInfosAlert'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { UploadImgButton } from '../../components/UploadImgButton/UploadImgButton'
-
-interface GoalDetailsScreenParams {
-	userId: string
-	goalId: string
-	getAvailableBalance: () => number
-	setDateHome: Dispatch<Date>
-}
+import { GoalDetailsScreenParams } from './types/GoalDetailsScreenParams.interface'
+import { confirmDelete } from './functions/confirmDelete'
 
 export function GoalDetailsScreen() {
 	const navigator = useContext(NavigationContext)
@@ -190,28 +185,9 @@ export function GoalDetailsScreen() {
 							goalData.currentValue >= goalData.goalValue ? 'green' : 'red'
 						}
 						width={200}
-						onPress={() => {
-							if (goalData.currentValue >= goalData.goalValue) {
-								;(async () => {
-									const { data } = await axios.delete(
-										`https://finances4u-api.bohr.io/api/user/${goalData.owner}/goals/${goalData._id}/delete`
-									)
-									if (data) {
-										setDate(new Date())
-										setDateHome(new Date())
-										navigator.navigate('LoadingModal', {
-											redirect: 'Home',
-											title: 'Concluindo...',
-											barColor: 'green',
-										})
-									}
-								})()
-							} else
-								navigator.navigate('ConfirmGoalDeleteModal', {
-									goal: goalData,
-									setDateHome: setDateHome,
-								})
-						}}
+						onPress={async () =>
+							await confirmDelete(goalData, setDate, setDateHome, navigator)
+						}
 					>
 						{goalData.currentValue >= goalData.goalValue
 							? 'Concluir Meta'

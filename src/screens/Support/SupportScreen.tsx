@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
-import {
-	ScrollView,
-	View,
-	KeyboardAvoidingView,
-	TouchableWithoutFeedback,
-} from 'react-native'
-import { Divider, IconButton, Text } from 'react-native-paper'
-import Animated, { SlideInUp, SlideOutDown } from 'react-native-reanimated'
+import { ScrollView, View, KeyboardAvoidingView } from 'react-native'
+import { Text } from 'react-native-paper'
 import { Oswald } from '../../styles/Oswald.font'
 import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { CustomBigButton } from '../../components/CustomBigButton'
@@ -15,11 +9,14 @@ import axios from 'axios'
 import { NavigationContext } from '@react-navigation/native'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-import { userInfo } from '../../components/userInfo'
+import { ErrorMsg } from '../../components/ErrorMsg'
+import { sendDoubt } from './functions/sendDoubt'
+import { AnsweredQuestion } from './components/AnsweredQuestion'
 
 export function SupportScreen() {
 	const navigator = useContext(NavigationContext)
 	const [customDoubt, setCustomDoubt] = useState('')
+	const [error, setError] = useState('')
 	const [doubts, setDoubts] = useState<Doubt[]>([])
 
 	useEffect(() => {
@@ -66,11 +63,16 @@ export function SupportScreen() {
 						{customDoubt}
 					</DefaultInput>
 
+					<ErrorMsg>{error}</ErrorMsg>
+
 					<View className='w-full flex-row items-center justify-evenly'>
 						<CustomBigButton
 							color='red'
 							width={150}
-							onPress={() => setCustomDoubt('')}
+							onPress={() => {
+								setCustomDoubt('')
+								setError('')
+							}}
 						>
 							Limpar
 						</CustomBigButton>
@@ -78,20 +80,14 @@ export function SupportScreen() {
 						<CustomBigButton
 							color='green'
 							width={150}
-							onPress={async () => {
-								try {
-									if (customDoubt == '')
-										throw new Error('Não é possível enviar uma dúvida vazia!')
-									navigator.navigate('LoadingModal', {
-										redirect: 'Support',
-										title: 'Enviando...',
-									})
-									await axios.post<Doubt>(
-										`https://finances4u-api.bohr.io/api/user/${userInfo.userId}/support/send/doubt?doubt=${customDoubt}`
-									)
-									setCustomDoubt('')
-								} catch (error) {}
-							}}
+							onPress={async () =>
+								await sendDoubt(
+									customDoubt,
+									setCustomDoubt,
+									setError,
+									navigator
+								)
+							}
 						>
 							Enviar
 						</CustomBigButton>
@@ -99,40 +95,5 @@ export function SupportScreen() {
 				</View>
 			</KeyboardAvoidingView>
 		</StandardScreen>
-	)
-}
-
-interface AnsweredQuestionProps {
-	children: string
-	title: string
-}
-
-function AnsweredQuestion(props: AnsweredQuestionProps) {
-	const [isOpen, setIsOpen] = useState(false)
-	return (
-		<TouchableWithoutFeedback
-			onPress={() => setIsOpen((prevState) => !prevState)}
-		>
-			<View className='bg-blue-3 p-3'>
-				<Animated.Text
-					className='text-white-1 text-[18px]'
-					style={[Oswald.regular, isOpen ? { paddingBottom: 12 } : {}]}
-				>
-					{props.title}
-				</Animated.Text>
-
-				{isOpen ? (
-					<Animated.View entering={SlideInUp} exiting={SlideOutDown}>
-						<Divider />
-
-						<View className='pt-3'>
-							<Text className='text-white-1 text-[18px]' style={Oswald.regular}>
-								{props.children}
-							</Text>
-						</View>
-					</Animated.View>
-				) : null}
-			</View>
-		</TouchableWithoutFeedback>
 	)
 }

@@ -7,10 +7,9 @@ import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-import axios from 'axios'
-import { Sugestion } from '../../@types/data/Sugestion.interface'
 import { NavigationContext } from '@react-navigation/native'
-import { userInfo } from '../../components/userInfo'
+import { ErrorMsg } from '../../components/ErrorMsg'
+import { sendSugestion } from './functions/sendSugestion'
 
 export function SugestionsScreen() {
 	const navigator = useContext(NavigationContext)
@@ -66,11 +65,7 @@ export function SugestionsScreen() {
 					{sugestion}
 				</DefaultInput>
 
-				{error == '' ? null : (
-					<Text className='text-red-1 text-center' style={Oswald.bold}>
-						{error}
-					</Text>
-				)}
+				<ErrorMsg>{error}</ErrorMsg>
 			</View>
 
 			<View className='w-full flex-row items-center justify-evenly'>
@@ -81,24 +76,15 @@ export function SugestionsScreen() {
 				<CustomBigButton
 					color='green'
 					width={150}
-					onPress={async () => {
-						try {
-							if (title == '' || sugestion == '')
-								throw new Error(
-									'O título e a descrição não podem estar vazios!'
-								)
-							navigator.navigate('LoadingModal', {
-								redirect: 'Sugestions',
-								title: 'Enviando...',
-							})
-							await axios.post<Sugestion>(
-								`https://finances4u-api.bohr.io/api/user/${userInfo.userId}/support/send/sugestion/?title=${title}&body=${sugestion}`
-							)
-							cleanFields()
-						} catch (e) {
-							setError(e.message)
-						}
-					}}
+					onPress={async () =>
+						await sendSugestion(
+							title,
+							sugestion,
+							cleanFields,
+							setError,
+							navigator
+						)
+					}
 				>
 					Enviar
 				</CustomBigButton>

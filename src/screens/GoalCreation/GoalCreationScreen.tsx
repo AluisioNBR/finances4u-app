@@ -2,27 +2,21 @@ import {
 	NavigationContext,
 	NavigationRouteContext,
 } from '@react-navigation/native'
-import { useContext, useEffect, useState, Dispatch } from 'react'
-import { View, ScrollView, TouchableWithoutFeedback } from 'react-native'
-import { IconButton, Text } from 'react-native-paper'
+import { useContext, useEffect, useState } from 'react'
+import { View, ScrollView } from 'react-native'
+import { Text } from 'react-native-paper'
 import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
-import colors from '../../../colors'
-import { Image } from 'react-native'
-import axios from 'axios'
-import { Goal } from '../../@types/data/Goal.interface'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import { Oswald } from '../../styles/Oswald.font'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-
-interface GoalCreationParams {
-	userId: string
-	availableBalance: number
-	availableIncrementRate: number
-	setDate: Dispatch<Date>
-}
+import { GoalCreationParams } from './types/GoalCreationParams.interface'
+import { ErrorMsg } from '../../components/ErrorMsg'
+import { ModalStandardButtonsContainer } from '../../components/ModalStandardButtonsContainer'
+import { UploadImgButton } from '../../components/UploadImgButton/UploadImgButton'
+import { createGoal } from './functions/createGoal'
 
 export function GoalCreationScreen() {
 	const [name, setName] = useState('')
@@ -131,34 +125,20 @@ export function GoalCreationScreen() {
 						O que acha de uma foto para sua meta ?
 					</Text>
 
-					{!goalPic ? (
-						<IconButton
-							icon='bullseye-arrow'
-							iconColor={'#fff'}
-							containerColor={colors.green[2]}
-							className='rounded'
-							size={100}
-							onPress={pickImage}
-						/>
-					) : (
-						<TouchableWithoutFeedback onPress={pickImage}>
-							<View className='w-[125px] h-[125px] p-1'>
-								<Image
-									source={{ uri: goalPic }}
-									className='w-full h-full rounded'
-								/>
-							</View>
-						</TouchableWithoutFeedback>
-					)}
+					<UploadImgButton
+						size={100}
+						width={125}
+						height={125}
+						icon='bullseye-arrow'
+						pickImage={pickImage}
+					>
+						{goalPic}
+					</UploadImgButton>
 				</View>
 
-				{!error ? null : (
-					<Text className='text-xl text-red-1' style={Oswald.regular}>
-						{error}
-					</Text>
-				)}
+				<ErrorMsg>{error}</ErrorMsg>
 
-				<View className='flex-row justify-evenly w-full'>
+				<ModalStandardButtonsContainer>
 					<CustomBigButton
 						width={175}
 						color='red'
@@ -173,39 +153,24 @@ export function GoalCreationScreen() {
 					<CustomBigButton
 						width={175}
 						color='green'
-						onPress={async () => {
-							try {
-								let goalValueNumber = parseFloat(goalValue),
-									currentValueNumber = parseFloat(currentValue),
-									incrementRateNumber = parseInt(incrementRate)
-
-								if (
-									isNaN(goalValueNumber) ||
-									isNaN(currentValueNumber) ||
-									isNaN(incrementRateNumber) ||
-									name == ''
-								)
-									throw new Error(
-										'Dados Incorretos! Por favor informe um nome, e nos valores numéricos digite apenas números. Para a taxa de incremento apenas números inteiros são aceitos. Caso a imagem fornecida tenha mais de 10mb ela não será aceita pelo sistema!'
-									)
-
-								const { data } = await axios.post<Goal>(
-									`https://finances4u-api.bohr.io/api/user/${userId}/goals/create?name=${name}&goalValue=${goalValue}&currentValue=${currentValue}&incrementRate=${incrementRate}`
-								)
-
-								if (data) {
-									if (goalPic) await uploadImage(data._id)
-									setDate(new Date())
-									navigator.navigate('LoadingModal', { redirect: 'Home' })
-								}
-							} catch (error) {
-								setError(error.message)
-							}
-						}}
+						onPress={async () =>
+							await createGoal(
+								userId,
+								name,
+								goalValue,
+								currentValue,
+								incrementRate,
+								goalPic,
+								uploadImage,
+								setError,
+								setDate,
+								navigator
+							)
+						}
 					>
 						Criar Meta
 					</CustomBigButton>
-				</View>
+				</ModalStandardButtonsContainer>
 			</StandardScreen>
 		</ScrollView>
 	)

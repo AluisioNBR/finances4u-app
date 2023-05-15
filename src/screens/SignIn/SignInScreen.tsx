@@ -1,14 +1,14 @@
 import { NavigationContext } from '@react-navigation/native'
-import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
 import { BigGreenButton } from '../../components/BigGreenButton'
 import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
-import { User } from '../../@types/data/User.interface'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { userInfo } from '../../components/userInfo'
+import { signIn } from './functions/signIn'
+import { passwordEncrypter } from '../../components/passwordEncrypter'
 
 export function SignInScreen() {
 	const [username, setUsername] = useState('')
@@ -26,21 +26,9 @@ export function SignInScreen() {
 		setPassword('')
 	}
 
-	const signIn = async () => {
-		try {
-			const { data } = await axios.post<User>(
-				`https://finances4u-api.bohr.io/api/signin?username=${username}&password=${password}`
-			)
-			navigator.navigate('LoadingModal', {
-				redirect: 'Home',
-				title: 'Logando...',
-				duration: 5000,
-			})
-			await userInfo.setUserId(data._id)
-			cleanFields()
-		} catch (error) {
-			console.log(error)
-		}
+	const goToSignUp = () => {
+		navigator.navigate('SignUp')
+		cleanFields()
 	}
 
 	useEffect(() => {
@@ -68,14 +56,7 @@ export function SignInScreen() {
 					label='Senha'
 					required
 					onChange={(newText) =>
-						setPassword((prevState) => {
-							let finalPassword = ''
-							for (const iterator of newText) {
-								if (iterator == '*') continue
-								finalPassword = prevState + iterator
-							}
-							return finalPassword
-						})
+						setPassword((prevState) => passwordEncrypter(prevState, newText))
 					}
 				>
 					{passwordEncrypted}
@@ -83,14 +64,21 @@ export function SignInScreen() {
 			</KeyboardAvoidingView>
 
 			<View className='items-center justify-between w-full h-32'>
-				<BigGreenButton onPress={signIn}>Login</BigGreenButton>
-
-				<NavLink
-					onPress={() => {
-						navigator.navigate('SignUp')
-						cleanFields()
-					}}
+				<BigGreenButton
+					onPress={async () =>
+						await signIn(
+							username,
+							password,
+							userInfo.setUserId,
+							cleanFields,
+							navigator
+						)
+					}
 				>
+					Login
+				</BigGreenButton>
+
+				<NavLink onPress={goToSignUp}>
 					Não possui uma conta ? Cadastre-se aqui!
 				</NavLink>
 			</View>

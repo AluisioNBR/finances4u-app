@@ -1,19 +1,16 @@
-import { View } from 'react-native'
 import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
-import { useState, useEffect, useContext, Dispatch } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { CustomBigButton } from '../../components/CustomBigButton'
 import {
 	NavigationContext,
 	NavigationRouteContext,
 } from '@react-navigation/native'
-import { Goal } from '../../@types/data/Goal.interface'
 import { User } from '../../@types/data/User.interface'
 import axios from 'axios'
-
-interface ConfirmGoalDeleteModalParams {
-	goal: Goal
-	setDateHome: Dispatch<Date>
-}
+import { ConfirmGoalDeleteModalParams } from './types/ConfirmGoalDeleteModalParams.interface'
+import { StandardModal } from '../../components/StandardModal'
+import { ModalStandardButtonsContainer } from '../../components/ModalStandardButtonsContainer'
+import { passwordEncrypter } from '../../components/passwordEncrypter'
 
 export function ConfirmGoalDeleteModal() {
 	const [user, setUser] = useState<User>()
@@ -44,64 +41,51 @@ export function ConfirmGoalDeleteModal() {
 		setPasswordEncrypted(result)
 	}, [password])
 
+	const cancelDelete = () => {
+		setPassword('')
+		setPasswordEncrypted('')
+		navigator.goBack()
+	}
+
+	const deleteGoal = () => {
+		if (password == user.password)
+			(async () => {
+				const { data } = await axios.delete(
+					`https://finances4u-api.bohr.io/api/user/${goal.owner}/goals/${goal._id}/delete`
+				)
+				if (data) {
+					setDateHome(new Date())
+					navigator.navigate('LoadingModal', {
+						redirect: 'Home',
+						title: 'Deletando...',
+						barColor: 'red',
+					})
+				}
+			})()
+	}
+
 	return (
-		<View className='flex-1 items-center justify-center bg-[#0005]'>
-			<View className='gap-4 bg-white-1 p-5 w-[95%] rounded-3xl justify-between'>
-				<DefaultInput
-					required
-					bold
-					label='Confirme com sua senha'
-					onChange={(newText) =>
-						setPassword((prevState) => {
-							let finalPassword = ''
-							for (const iterator of newText) {
-								if (iterator == '*') continue
-								finalPassword = prevState + iterator
-							}
-							return finalPassword
-						})
-					}
-				>
-					{passwordEncrypted}
-				</DefaultInput>
+		<StandardModal>
+			<DefaultInput
+				required
+				bold
+				label='Confirme com sua senha'
+				onChange={(newText) =>
+					setPassword((prevState) => passwordEncrypter(prevState, newText))
+				}
+			>
+				{passwordEncrypted}
+			</DefaultInput>
 
-				<View className='mt-3 flex-row justify-evenly w-full'>
-					<CustomBigButton
-						width={150}
-						color='red'
-						onPress={() => {
-							setPassword('')
-							setPasswordEncrypted('')
-							navigator.goBack()
-						}}
-					>
-						Cancelar
-					</CustomBigButton>
+			<ModalStandardButtonsContainer>
+				<CustomBigButton width={150} color='red' onPress={cancelDelete}>
+					Cancelar
+				</CustomBigButton>
 
-					<CustomBigButton
-						width={150}
-						color='red'
-						onPress={() => {
-							if (password == user.password)
-								(async () => {
-									const { data } = await axios.delete(
-										`https://finances4u-api.bohr.io/api/user/${goal.owner}/goals/${goal._id}/delete`
-									)
-									if (data) {
-										setDateHome(new Date())
-										navigator.navigate('LoadingModal', {
-											redirect: 'Home',
-											title: 'Deletando...',
-											barColor: 'red',
-										})
-									}
-								})()
-						}}
-					>
-						Excluir
-					</CustomBigButton>
-				</View>
-			</View>
-		</View>
+				<CustomBigButton width={150} color='red' onPress={deleteGoal}>
+					Excluir
+				</CustomBigButton>
+			</ModalStandardButtonsContainer>
+		</StandardModal>
 	)
 }

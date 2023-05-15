@@ -1,31 +1,20 @@
-import { TouchableWithoutFeedback, View, Image } from 'react-native'
-import { Switch, Text } from 'react-native-paper'
+import { View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { Oswald } from '../../styles/Oswald.font'
 import colors from '../../../colors'
-import React, { useContext, useEffect, useState, createContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { User } from '../../@types/data/User.interface'
 import { uploadAsync, FileSystemUploadType } from 'expo-file-system'
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker'
 import axios from 'axios'
-import Animated, {
-	interpolateColor,
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated'
 import { NavigationContext } from '@react-navigation/native'
 import { LoadingInfosAlert } from '../../components/LoadingInfosAlert'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { UploadImgButton } from '../../components/UploadImgButton/UploadImgButton'
 import { userInfo } from '../../components/userInfo'
-
-interface DateContextInterface {
-	setDate: React.Dispatch<Date>
-}
-const DateContext: React.Context<DateContextInterface> = createContext({
-	setDate: () => {},
-})
+import { DateContext } from './data/DateContext'
+import { SettingsContainer } from './components/SettingsContainer'
 
 export function SettingsScreen() {
 	const navigator = useContext(NavigationContext)
@@ -113,187 +102,13 @@ export function SettingsScreen() {
 					</Text>
 				</View>
 
-				<View>
-					<SwitchSetting
-						title='Incremento automático'
-						color='green'
-						on={userData.accountConfig.autoIncrement}
-						onChangeValue={async () => {
-							await axios.patch<User>(
-								`https://finances4u-api.bohr.io/api//user/${userData._id}/change/autoIncrement/`
-							)
-						}}
-					>
-						Ao adcionar dinheiro, as metas receberão investimento
-						automáticamente
-					</SwitchSetting>
-
-					<SwitchSetting
-						title='Edição de Bloqueios'
-						color='green'
-						on={userData.accountConfig.blocksEdit}
-						onChangeValue={async () => {
-							await axios.patch<User>(
-								`https://finances4u-api.bohr.io/api//user/${userData._id}/change/blocksEdit/`
-							)
-						}}
-					>
-						Permite com que o usuário edite informações sobre bloqueios
-					</SwitchSetting>
-
-					<SettingActionButton
-						userId={userData._id}
-						password={userData.password}
-						title='Alterar Nome de Usuário'
-						color='blue'
-						action='changeName'
-					>
-						Altera o nome de usuário da sua conta
-					</SettingActionButton>
-
-					<SettingActionButton
-						userId={userData._id}
-						password={userData.password}
-						title='Deletar Conta'
-						color='red'
-						action='deleteAccount'
-					>
-						<>
-							Encerra e deleta sua conta.{' '}
-							<Text className='text-white-1' style={Oswald.bold}>
-								Atenção, essa ação é irreversível!
-							</Text>
-						</>
-					</SettingActionButton>
-				</View>
+				<SettingsContainer
+					_id={userData._id}
+					password={userData.password}
+					autoIncrement={userData.accountConfig.autoIncrement}
+					blocksEdit={userData.accountConfig.blocksEdit}
+				/>
 			</StandardScreen>
 		</DateContext.Provider>
-	)
-}
-
-interface SwitchSettingProps {
-	title: string
-	children: string
-	on?: boolean
-	color?: 'green' | 'red' | 'blue'
-	onChangeValue: () => void
-}
-
-function SwitchSetting(props: SwitchSettingProps) {
-	const [isSwitchOn, setIsSwitchOn] = useState(props.on ? true : false)
-	const switchColor =
-		props.color == 'green'
-			? colors.green[1]
-			: props.color == 'red'
-			? colors.red[1]
-			: colors.blue[0]
-	const valueChange = () => {
-		setIsSwitchOn(!isSwitchOn)
-		props.onChangeValue()
-	}
-
-	return (
-		<View className='w-full flex-row items-center justify-between p-4'>
-			<View className='w-4/5'>
-				<Text variant='titleLarge' style={Oswald.regular}>
-					{props.title}
-				</Text>
-
-				<Text variant='titleSmall' style={Oswald.regular}>
-					{props.children}
-				</Text>
-			</View>
-
-			<Switch
-				value={isSwitchOn}
-				onValueChange={valueChange}
-				color={switchColor}
-			/>
-		</View>
-	)
-}
-
-interface SettingActionButtonProps {
-	color?: 'green' | 'red' | 'blue'
-	title: string
-	children: string | JSX.Element
-	action: 'changeName' | 'deleteAccount'
-	userId: string
-	password: string
-}
-
-function SettingActionButton(props: SettingActionButtonProps) {
-	const navigator = useContext(NavigationContext)
-	const { setDate } = useContext(DateContext)
-	const buttonColors = {
-		green: {
-			background: colors.green[2],
-			pressed: colors.green[3],
-			text: colors.white[1],
-		},
-		red: {
-			background: colors.red[1],
-			pressed: colors.red[2],
-			text: colors.white[1],
-		},
-		blue: {
-			background: colors.blue[1],
-			pressed: colors.blue[2],
-			text: colors.white[1],
-		},
-	}
-	const pressed = useSharedValue(0)
-	const buttonTypeColor = props.color ? props.color : 'green'
-
-	const backgroundAnimation = useAnimatedStyle(() => {
-		return {
-			backgroundColor: interpolateColor(
-				pressed.value,
-				[0, 1],
-				[
-					buttonColors[buttonTypeColor].background,
-					buttonColors[buttonTypeColor].pressed,
-				]
-			),
-		}
-	})
-	return (
-		<TouchableWithoutFeedback
-			onPressIn={() => (pressed.value = withTiming(1, { duration: 150 }))}
-			onPress={() =>
-				navigator.navigate('SettingsModal', {
-					userId: props.userId,
-					action: props.action,
-					userPassword: props.password,
-					setDate: setDate,
-				})
-			}
-			onPressOut={() => (pressed.value = withTiming(0, { duration: 150 }))}
-		>
-			<Animated.View
-				className='mx-4 my-2 p-4 h-24 justify-center'
-				style={backgroundAnimation}
-			>
-				<Text
-					variant='titleLarge'
-					style={[
-						Oswald.regular,
-						{ color: buttonColors[buttonTypeColor].text },
-					]}
-				>
-					{props.title}
-				</Text>
-
-				<Text
-					variant='titleSmall'
-					style={[
-						Oswald.regular,
-						{ color: buttonColors[buttonTypeColor].text },
-					]}
-				>
-					{props.children}
-				</Text>
-			</Animated.View>
-		</TouchableWithoutFeedback>
 	)
 }
