@@ -18,26 +18,24 @@ export async function createGoal(
 	try {
 		let goalValueNumber = parseFloat(goalValue),
 			currentValueNumber = parseFloat(currentValue),
-			incrementRateNumber = parseInt(incrementRate)
+			incrementRateNumber = incrementRate == '' ? 0 : parseInt(incrementRate)
 
-		if (
-			isNaN(goalValueNumber) ||
-			isNaN(currentValueNumber) ||
-			isNaN(incrementRateNumber) ||
-			name == ''
-		)
+		if (isNaN(goalValueNumber) || isNaN(currentValueNumber) || name == '')
 			throw new Error(
 				'Dados Incorretos! Por favor informe um nome, e nos valores numéricos digite apenas números. Para a taxa de incremento apenas números inteiros são aceitos. Caso a imagem fornecida tenha mais de 10mb ela não será aceita pelo sistema!'
 			)
 
 		const { data } = await axios.post<Goal>(
-			`https://finances4u-api.bohr.io/api/user/${userId}/goals/create?name=${name}&goalValue=${goalValue}&currentValue=${currentValue}&incrementRate=${incrementRate}`
+			`https://finances4u-api.bohr.io/api/user/${userId}/goals/create?name=${name}&goalValue=${goalValue}&currentValue=${currentValue}&incrementRate=${incrementRateNumber}`
 		)
 
 		if (data) {
 			if (goalPic) await uploadImage(data._id)
 			setDate(new Date())
-			navigator.navigate('LoadingModal', { redirect: 'Home' })
+			navigator.navigate('LoadingModal', {
+				redirect: 'Home',
+				title: 'Criando...',
+			})
 		}
 	} catch (error) {
 		setError(error.message)

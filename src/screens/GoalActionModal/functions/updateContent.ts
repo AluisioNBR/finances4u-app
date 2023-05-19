@@ -5,7 +5,7 @@ import { Goal } from '../../../@types/data/Goal.interface'
 export function updateContent(
 	type: 'edit' | 'increment' | 'decrement',
 	goalData: Goal,
-	getAvailableBalance: () => number,
+	balance: number,
 	setDate: Dispatch<Date>,
 	cleanFields: () => void,
 	navigator: NavigationProp<ParamListBase, string, undefined>
@@ -17,7 +17,7 @@ export function updateContent(
 		routeParams: {
 			userId: goalData.owner,
 			goalId: goalData._id,
-			getAvailableBalance: getAvailableBalance,
+			balance: balance,
 		},
 		title:
 			type == 'edit'

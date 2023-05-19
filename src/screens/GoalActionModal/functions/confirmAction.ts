@@ -5,6 +5,7 @@ import { getData } from './getData'
 import { showError } from './showError'
 import { updateContent } from './updateContent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
+import { getUserBalanceDecrement } from '../../../components/getUserBalanceDecrement'
 
 export async function confirmAction(
 	userId: string,
@@ -16,7 +17,7 @@ export async function confirmAction(
 	value: string,
 	increment: string,
 	availableIncrement: number,
-	getAvailableBalance: () => number,
+	balance: number,
 	setError: Dispatch<string>,
 	setDate: Dispatch<Date>,
 	cleanFields: () => void,
@@ -30,7 +31,7 @@ export async function confirmAction(
 			value,
 			increment,
 			availableIncrement,
-			getAvailableBalance
+			balance - (await getUserBalanceDecrement())
 		)
 
 		const data = await getData(
@@ -44,14 +45,7 @@ export async function confirmAction(
 		)
 
 		if (data)
-			updateContent(
-				type,
-				goalData,
-				getAvailableBalance,
-				setDate,
-				cleanFields,
-				navigator
-			)
+			updateContent(type, goalData, balance, setDate, cleanFields, navigator)
 	} catch (error) {
 		showError(type, setError)
 	}

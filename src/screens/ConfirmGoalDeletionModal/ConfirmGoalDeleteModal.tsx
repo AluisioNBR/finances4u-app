@@ -47,21 +47,20 @@ export function ConfirmGoalDeleteModal() {
 		navigator.goBack()
 	}
 
-	const deleteGoal = () => {
-		if (password == user.password)
-			(async () => {
-				const { data } = await axios.delete(
-					`https://finances4u-api.bohr.io/api/user/${goal.owner}/goals/${goal._id}/delete`
-				)
-				if (data) {
-					setDateHome(new Date())
-					navigator.navigate('LoadingModal', {
-						redirect: 'Home',
-						title: 'Deletando...',
-						barColor: 'red',
-					})
-				}
-			})()
+	const deleteGoal = async () => {
+		if (password == user.password) {
+			const { data } = await axios.delete(
+				`https://finances4u-api.bohr.io/api/user/${goal.owner}/goals/${goal._id}/delete`
+			)
+			if (data) {
+				setDateHome(new Date())
+				navigator.navigate('LoadingModal', {
+					redirect: 'Home',
+					title: 'Deletando...',
+					barColor: 'red',
+				})
+			}
+		}
 	}
 
 	return (
@@ -82,7 +81,11 @@ export function ConfirmGoalDeleteModal() {
 					Cancelar
 				</CustomBigButton>
 
-				<CustomBigButton width={150} color='red' onPress={deleteGoal}>
+				<CustomBigButton
+					width={150}
+					color='red'
+					onPress={async () => await deleteGoal()}
+				>
 					Excluir
 				</CustomBigButton>
 			</ModalStandardButtonsContainer>

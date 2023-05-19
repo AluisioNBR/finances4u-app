@@ -34,6 +34,7 @@ export function SettingsScreen() {
 			)
 			setUserData(user.data)
 			setProfilePic(user.data.profilePic)
+			userInfo.profilePic = user.data.profilePic
 		})()
 	}, [date])
 
@@ -87,7 +88,7 @@ export function SettingsScreen() {
 				<View className='items-center'>
 					<UploadImgButton
 						icon='account'
-						size={64}
+						size={112}
 						pickImage={pickImage}
 						roundedFull
 						borderColor={colors.black[1]}

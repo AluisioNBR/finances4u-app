@@ -14,7 +14,7 @@ export function HeaderWithReturn(props: StandardHeaderProps) {
 			<IconButton
 				icon='keyboard-return'
 				className='absolute bg-gray-1 w-11 h-11'
-				style={{ left: props.buttonPos ? props.buttonPos : -160 }}
+				style={{ left: props.buttonPos ? props.buttonPos : -105 }}
 				onPress={() => {
 					const callbackExec = props.callback ? props.callback : () => {}
 					callbackExec()
@@ -24,6 +24,7 @@ export function HeaderWithReturn(props: StandardHeaderProps) {
 
 			<Text
 				variant='headlineLarge'
+				className='w-[50%] text-center'
 				style={isBold ? Oswald.bold : Oswald.regular}
 			>
 				{props.children}

@@ -12,7 +12,7 @@ export function DrawerHeader(props: DrawerHeaderProps) {
 		<View className='w-full h-64 bg-[#fff] px-4 pt-16 pb-8' style={{ gap: 16 }}>
 			<View className='flex-row items-center gap-2'>
 				<Image
-					source={require('../../assets/mini_icon.png')}
+					source={require('../../../../assets/mini_icon.png')}
 					className='w-[48px] h-[48px] rounded-full'
 				/>
 				<Text variant='titleLarge' style={Oswald.regular}>

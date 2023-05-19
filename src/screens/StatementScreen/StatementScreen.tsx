@@ -12,12 +12,13 @@ import { StatementScreenParams } from './types/StatementScreenParams.interface'
 import { MonthFormattedStatement } from './types/MonthFormattedStatement.interface'
 import { formatTransaction } from './functions/formatTransaction'
 import { MonthContainer } from './components/MonthContainer'
+import { getUserBalanceDecrement } from '../../components/getUserBalanceDecrement'
 
 export function StatementScreen() {
 	const navigator = useContext(NavigationContext)
 	const route = useContext(NavigationRouteContext)
-	const { statement, balance, availableBalance } =
-		route.params as StatementScreenParams
+	const { statement, balance } = route.params as StatementScreenParams
+	const [availableBalance, setAvailabeBalance] = useState(0)
 
 	const [formattedStatement, setFormattedStatement] = useState<
 		MonthFormattedStatement[]
@@ -29,6 +30,9 @@ export function StatementScreen() {
 	useEffect(() => {
 		// @ts-ignore
 		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+		;(async () => {
+			setAvailabeBalance(balance - (await getUserBalanceDecrement()))
+		})()
 	}, [])
 
 	useEffect(() => {
@@ -43,9 +47,7 @@ export function StatementScreen() {
 
 	return (
 		<StandardScreen>
-			<StandardHeader noMenu buttonPos={-158}>
-				Extrato
-			</StandardHeader>
+			<StandardHeader noMenu>Extrato</StandardHeader>
 
 			<View className='flex-1 w-full items-center gap-6'>
 				<View className='w-full items-start'>
@@ -69,6 +71,7 @@ export function StatementScreen() {
 				<ScrollView className='w-full'>
 					{statementToUse.reverse().map((monthStatement) => {
 						const monthKey = `m${monthStatement.month}`
+						console.log(monthKey)
 						return (
 							<MonthContainer monthKey={monthKey}>
 								{monthStatement.transactions}

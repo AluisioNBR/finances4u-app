@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useContext } from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { Block } from '../../@types/data/Block.interface'
 import axios from 'axios'
 import { User } from '../../@types/data/User.interface'
@@ -67,21 +68,27 @@ export function BlocksScreen() {
 		<StandardScreen pos='start'>
 			<StandardHeader>Bloqueios</StandardHeader>
 
-			<ScrollView className='w-full'>
-				{blocks.map((block) => (
-					<BlockComponent
-						key={block._id}
-						id={block._id}
-						owner={block.owner}
-						value={block.value}
-						canEdit={user ? user.accountConfig.blocksEdit : false}
-						setDate={setDate}
-						getAvailableBalance={getAvailableBalance}
-					>
-						{block.name}
-					</BlockComponent>
-				))}
-			</ScrollView>
+			{blocks.length == 0 ? (
+				<View className='flex-1 items-center justify-center'>
+					<Text variant='titleMedium'>Você não tem bloqueios cadastrados!</Text>
+				</View>
+			) : (
+				<ScrollView className='w-full'>
+					{blocks.map((block) => (
+						<BlockComponent
+							key={block._id}
+							id={block._id}
+							owner={block.owner}
+							value={block.value}
+							canEdit={user ? user.accountConfig.blocksEdit : false}
+							setDate={setDate}
+							getAvailableBalance={getAvailableBalance}
+						>
+							{block.name}
+						</BlockComponent>
+					))}
+				</ScrollView>
+			)}
 		</StandardScreen>
 	)
 }

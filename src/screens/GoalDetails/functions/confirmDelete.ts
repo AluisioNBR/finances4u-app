@@ -10,7 +10,7 @@ export async function confirmDelete(
 	navigator: NavigationProp<ParamListBase, string, undefined>
 ) {
 	if (goalData.currentValue >= goalData.goalValue) {
-		await deleteCompleteGoal(goalData, setDate, setDateHome, navigator)
+		await deleteCompleteGoal(goalData, setDateHome, navigator)
 	} else
 		navigator.navigate('ConfirmGoalDeleteModal', {
 			goal: goalData,
@@ -20,7 +20,6 @@ export async function confirmDelete(
 
 async function deleteCompleteGoal(
 	goalData: Goal,
-	setDate: Dispatch<Date>,
 	setDateHome: Dispatch<Date>,
 	navigator: NavigationProp<ParamListBase, string, undefined>
 ) {
@@ -28,12 +27,11 @@ async function deleteCompleteGoal(
 		`https://finances4u-api.bohr.io/api/user/${goalData.owner}/goals/${goalData._id}/delete`
 	)
 	if (data) {
-		setDate(new Date())
-		setDateHome(new Date())
 		navigator.navigate('LoadingModal', {
 			redirect: 'Home',
 			title: 'Concluindo...',
 			barColor: 'green',
 		})
+		setDateHome(new Date())
 	}
 }

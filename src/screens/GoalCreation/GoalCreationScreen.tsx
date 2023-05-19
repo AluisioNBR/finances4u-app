@@ -79,9 +79,7 @@ export function GoalCreationScreen() {
 	return (
 		<ScrollView>
 			<StandardScreen>
-				<StandardHeader noMenu buttonPos={-200}>
-					{''}
-				</StandardHeader>
+				<StandardHeader noMenu>{''}</StandardHeader>
 
 				<DefaultInput
 					label='Qual o nome da sua meta ?'

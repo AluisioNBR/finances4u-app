@@ -6,7 +6,6 @@ import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-import { userInfo } from '../../components/userInfo'
 import { signUp } from './functions/signUp'
 import { ErrorMsg } from '../../components/ErrorMsg'
 import { passwordEncrypter } from '../../components/passwordEncrypter'
@@ -53,7 +52,7 @@ export function SignUpScreen() {
 
 	return (
 		<StandardScreen pos='between'>
-			<StandardHeader noMenu callback={cleanFields} buttonPos={-150}>
+			<StandardHeader noMenu callback={cleanFields}>
 				Cadastro
 			</StandardHeader>
 
@@ -111,7 +110,6 @@ export function SignUpScreen() {
 							password,
 							passwordConfirm,
 							cleanFields,
-							userInfo.setUserId,
 							setError,
 							navigator
 						)

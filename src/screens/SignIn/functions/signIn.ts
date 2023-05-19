@@ -1,11 +1,11 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import axios from 'axios'
 import { User } from '../../../@types/data/User.interface'
+import { userInfo } from '../../../components/userInfo'
 
 export async function signIn(
 	username: string,
 	password: string,
-	setUserId: (userId: string) => Promise<void>,
 	cleanFields: () => void,
 	navigator: NavigationProp<ParamListBase, string, undefined>
 ) {
@@ -13,12 +13,13 @@ export async function signIn(
 		const { data } = await axios.post<User>(
 			`https://finances4u-api.bohr.io/api/signin?username=${username}&password=${password}`
 		)
+		userInfo.userId = data._id
 		navigator.navigate('LoadingModal', {
 			redirect: 'Home',
 			title: 'Logando...',
 			duration: 5000,
 		})
-		await setUserId(data._id)
+		await userInfo.setUserId(data._id)
 		cleanFields()
 	} catch (error) {
 		console.log(error)

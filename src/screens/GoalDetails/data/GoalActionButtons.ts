@@ -1,10 +1,10 @@
 import { Dispatch } from 'react'
-import { ActionButtonProps } from '../../../components/ActionButtons/ActionButtonsContainer'
+import { ActionButtonProps } from '../../../components/ActionButtons/types/ActionButtonProps.interface'
 
 export function GoalActionButtons(
 	userId: string,
 	goalId: string,
-	getAvailableBalance: () => number,
+	balance: number,
 	incrementRateAvailable: number,
 	navigate: (route: string, params: any) => void,
 	setDate: Dispatch<Date>
@@ -18,7 +18,7 @@ export function GoalActionButtons(
 					goalId: goalId,
 					type: 'increment',
 					setDate: setDate,
-					getAvailableBalance: getAvailableBalance,
+					balance: balance,
 					availableIncrement: incrementRateAvailable,
 				}),
 			icon: 'cash-plus',
@@ -32,7 +32,7 @@ export function GoalActionButtons(
 					goalId: goalId,
 					type: 'decrement',
 					setDate: setDate,
-					getAvailableBalance: getAvailableBalance,
+					balance: balance,
 					availableIncrement: incrementRateAvailable,
 				}),
 			icon: 'cash-minus',
@@ -46,7 +46,7 @@ export function GoalActionButtons(
 					goalId: goalId,
 					type: 'edit',
 					setDate: setDate,
-					getAvailableBalance: getAvailableBalance,
+					balance: balance,
 					availableIncrement: incrementRateAvailable,
 				}),
 			icon: 'file-document-edit',

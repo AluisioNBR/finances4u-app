@@ -22,10 +22,10 @@ export function MenuDrawer(props: MenuDrawerProps) {
 					`https://finances4u-api.bohr.io/api/user/${userInfo.userId}`
 				)
 				setUserData(user.data)
-				setProfilePic(userData.profilePic ? userData.profilePic : '')
+				setProfilePic(userInfo.profilePic)
 			} catch (error) {}
 		})()
-	}, [userInfo.userId])
+	}, [userInfo.userId, userInfo.profilePic, userInfo.balance])
 
 	return (
 		<Drawer.Section className='flex-1' showDivider={false}>

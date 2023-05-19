@@ -1,6 +1,7 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import axios from 'axios'
 import { Dispatch } from 'react'
+import { userInfo } from '../../../components/userInfo'
 
 export async function signUp(
 	username: string,
@@ -8,7 +9,6 @@ export async function signUp(
 	password: string,
 	passwordConfirm: string,
 	cleanFields: () => void,
-	setUserId: (userId: string) => Promise<void>,
 	setError: Dispatch<string>,
 	navigator: NavigationProp<ParamListBase, string, undefined>
 ) {
@@ -19,14 +19,17 @@ export async function signUp(
 		const { data } = await axios.post(
 			`https://finances4u-api.bohr.io/api/signup?username=${username}&email=${email}&password=${password}`
 		)
+		userInfo.userId = data._id
 		navigator.navigate('LoadingModal', {
 			redirect: 'Home',
 			title: 'Cadastrando...',
 			duration: 5000,
 		})
-		await setUserId(data._id)
+		await userInfo.setUserId(data._id)
 		cleanFields()
 	} catch (error) {
-		setError(error.message)
+		if (error.message.split(' ').at(-1) == '400')
+			setError('Este email já está cadastrado!')
+		else setError(error.message)
 	}
 }

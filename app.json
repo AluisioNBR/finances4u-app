@@ -1,44 +1,41 @@
 {
-  "expo": {
-    "name": "Finances4U",
-    "slug": "Finances4U",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#107869"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#107869"
-      },
-      "backgroundColor": "#EDEEF1",
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
-    },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "O Finances4U precisa de permissão para fazer envio de imagens para o perfil e para suas metas"
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "805d5b45-437d-47ea-835c-94175ad5a31d"
-      }
-    }
-  }
+	"expo": {
+		"name": "Finanças4U",
+		"slug": "Finances4U",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#107869"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#107869"
+			},
+			"backgroundColor": "#EDEEF1",
+			"permissions": ["android.permission.RECORD_AUDIO"],
+			"package": "com.aluisionbr.Finances4U"
+		},
+		"plugins": [
+			[
+				"expo-image-picker",
+				{
+					"photosPermission": "O Finances4U precisa de permissão para fazer envio de imagens para o perfil e para suas metas"
+				}
+			]
+		],
+		"extra": {
+			"eas": {
+				"projectId": "805d5b45-437d-47ea-835c-94175ad5a31d"
+			}
+		}
+	}
 }

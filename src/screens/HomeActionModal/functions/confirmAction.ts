@@ -1,6 +1,8 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import axios from 'axios'
 import { Dispatch } from 'react'
+import { userInfo } from '../../../components/userInfo'
+import { Transaction } from '../../../@types/data/Transaction.interface'
 
 export async function confirmAction(
 	userId: string,
@@ -29,6 +31,13 @@ export async function confirmAction(
 		if (data) {
 			setDate(new Date())
 			setError('')
+
+			if (type != 'block') {
+				const dataToUse = data as Transaction
+				userInfo.balance =
+					type == 'receive' ? +dataToUse.value : -dataToUse.value
+			}
+
 			navigator.navigate('LoadingModal', {
 				redirect: 'Home',
 				title:

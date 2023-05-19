@@ -5,6 +5,6 @@ export interface GoalActionModalParams {
 	goalId: string
 	type: 'edit' | 'increment' | 'decrement'
 	setDate: Dispatch<Date>
-	getAvailableBalance?: () => number
+	balance?: number
 	availableIncrement?: number
 }

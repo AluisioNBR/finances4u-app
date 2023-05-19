@@ -6,24 +6,25 @@ import { Oswald } from '../../styles/Oswald.font'
 import colors from '../../../colors'
 
 export function DefaultInput(props: DefaultInputProps) {
-	const [labelVisibility, setLabelVisibility] = useState(true)
 	const [isFocus, setIsFocus] = useState(false)
 
 	const Label = (
-		<Text
-			className='text-[16px]'
-			style={props.bold ? Oswald.bold : Oswald.regular}
-		>
-			{props.label}{' '}
-			<Text className='text-red-1' style={Oswald.bold}>
-				{props.required ? '*' : ''}
+		<View>
+			<Text
+				className='text-[16px]'
+				style={props.bold ? Oswald.bold : Oswald.regular}
+			>
+				{props.label}{' '}
+				<Text className='text-red-1' style={Oswald.bold}>
+					{props.required ? '*' : ''}
+				</Text>
 			</Text>
-		</Text>
+		</View>
 	)
 
 	return (
 		<View className='w-full'>
-			{labelVisibility ? Label : null}
+			{Label}
 			<TextInput
 				inputMode='text'
 				mode='outlined'
@@ -34,17 +35,10 @@ export function DefaultInput(props: DefaultInputProps) {
 						borderRadius: props.rounded ? props.rounded : 75,
 						borderColor: colors.green[2],
 					},
-					isFocus ? { borderWidth: 3 } : { borderWidth: 4 },
+					isFocus ? { borderWidth: 2 } : { borderWidth: 1 },
 				]}
-				label={labelVisibility ? '' : Label}
-				onFocus={() => {
-					setIsFocus(true)
-					setLabelVisibility(false)
-				}}
-				onBlur={() => {
-					setIsFocus(false)
-					setLabelVisibility(true)
-				}}
+				onFocus={() => setIsFocus(true)}
+				onBlur={() => setIsFocus(false)}
 				onChangeText={(text) => props.onChange(text)}
 				style={[Oswald.regular, { flexWrap: 'wrap' }]}
 				className={`w-full text-[16px] bg-white`}

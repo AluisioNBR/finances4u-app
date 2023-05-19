@@ -15,19 +15,15 @@ import { GoalActionModalParams } from './types/GoalActionModalParams.interface'
 import { confirmAction } from './functions/confirmAction'
 import { EditInputs } from './components/EditInputs'
 import { buttonConfig } from './data/buttonConfig'
+import { getUserBalanceDecrement } from '../../components/getUserBalanceDecrement'
 
 export function GoalActionModal() {
 	const navigator = useContext(NavigationContext)
 	const { params } = useContext(NavigationRouteContext)
-	const {
-		userId,
-		goalId,
-		type,
-		setDate,
-		getAvailableBalance,
-		availableIncrement,
-	} = params as GoalActionModalParams
+	const { userId, goalId, type, setDate, balance, availableIncrement } =
+		params as GoalActionModalParams
 
+	const [availableBalance, setAvailabeBalance] = useState(0)
 	const [goalData, setGoalData] = useState<Goal>()
 	const [goalName, setGoalName] = useState('')
 	const [goalValue, setGoalValue] = useState('')
@@ -57,6 +53,7 @@ export function GoalActionModal() {
 			setGoalValue(`${data.goalValue}`)
 			setCurrentValue(data.currentValue)
 			setIncrement(`${data.incrementRate}`)
+			setAvailabeBalance(balance - (await getUserBalanceDecrement()))
 		})()
 	}, [])
 
@@ -82,7 +79,7 @@ export function GoalActionModal() {
 					}
 					helpMessage={
 						type == 'increment'
-							? `Disponível: R$${getAvailableBalance()}`
+							? `Disponível: R$${availableBalance}`
 							: `Pode retirar até R$${currentValue}`
 					}
 					onChange={(newValue) => setValue(newValue)}
@@ -119,7 +116,7 @@ export function GoalActionModal() {
 							value,
 							increment,
 							availableIncrement,
-							getAvailableBalance,
+							balance,
 							setError,
 							setDate,
 							cleanFields,

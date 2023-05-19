@@ -5,7 +5,7 @@ export function checkErrors(
 	value: string,
 	increment: string,
 	availableIncrement: number,
-	getAvailableBalance: () => number
+	availableBalance: number
 ) {
 	if (
 		type == 'edit' &&
@@ -17,7 +17,7 @@ export function checkErrors(
 		throw new Error('Edit Error')
 	else if (
 		(type != 'edit' && isNaN(parseFloat(value))) ||
-		(type == 'increment' && parseFloat(value) > getAvailableBalance())
+		(type == 'increment' && parseFloat(value) > availableBalance)
 	)
 		throw new Error('Change Error')
 }

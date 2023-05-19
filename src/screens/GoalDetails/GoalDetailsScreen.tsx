@@ -21,14 +21,16 @@ import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { UploadImgButton } from '../../components/UploadImgButton/UploadImgButton'
 import { GoalDetailsScreenParams } from './types/GoalDetailsScreenParams.interface'
 import { confirmDelete } from './functions/confirmDelete'
+import { getUserBalanceDecrement } from '../../components/getUserBalanceDecrement'
 
 export function GoalDetailsScreen() {
 	const navigator = useContext(NavigationContext)
 	const route = useContext(NavigationRouteContext)
-	const { userId, goalId, getAvailableBalance, setDateHome } =
+	const { userId, goalId, balance, setDateHome } =
 		route.params as GoalDetailsScreenParams
 
 	const [date, setDate] = useState(new Date())
+	const [availableBalance, setAvailabeBalance] = useState(0)
 	const [incrementRateAvailable, setIncrementRateAvailable] = useState(0)
 	const [goalData, setGoalData] = useState<Goal>()
 	const [goalPic, setGoalPic] = useState('')
@@ -36,6 +38,12 @@ export function GoalDetailsScreen() {
 	useEffect(() => {
 		// @ts-ignore
 		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
+	}, [])
+
+	useEffect(() => {
+		;(async () => {
+			setAvailabeBalance(balance - (await getUserBalanceDecrement()))
+		})()
 	}, [])
 
 	useEffect(() => {
@@ -110,7 +118,7 @@ export function GoalDetailsScreen() {
 		}, [])
 	)
 
-	if (!goalData)
+	if (!goalData && availableBalance == 0)
 		return (
 			<LoadingInfosAlert>
 				{'Carregando informações\nda meta...'}
@@ -171,7 +179,7 @@ export function GoalDetailsScreen() {
 						{GoalActionButtons(
 							goalData.owner,
 							goalData._id,
-							getAvailableBalance,
+							balance,
 							incrementRateAvailable,
 							navigator.navigate,
 							setDate

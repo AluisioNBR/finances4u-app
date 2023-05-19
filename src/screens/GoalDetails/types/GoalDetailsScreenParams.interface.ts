@@ -3,6 +3,6 @@ import { Dispatch } from 'react'
 export interface GoalDetailsScreenParams {
 	userId: string
 	goalId: string
-	getAvailableBalance: () => number
+	balance: number
 	setDateHome: Dispatch<Date>
 }

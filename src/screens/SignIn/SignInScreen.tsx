@@ -6,7 +6,6 @@ import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
-import { userInfo } from '../../components/userInfo'
 import { signIn } from './functions/signIn'
 import { passwordEncrypter } from '../../components/passwordEncrypter'
 
@@ -39,7 +38,7 @@ export function SignInScreen() {
 
 	return (
 		<StandardScreen pos='between'>
-			<StandardHeader noMenu buttonPos={-170} callback={cleanFields}>
+			<StandardHeader noMenu callback={cleanFields}>
 				Login
 			</StandardHeader>
 
@@ -66,13 +65,7 @@ export function SignInScreen() {
 			<View className='items-center justify-between w-full h-32'>
 				<BigGreenButton
 					onPress={async () =>
-						await signIn(
-							username,
-							password,
-							userInfo.setUserId,
-							cleanFields,
-							navigator
-						)
+						await signIn(username, password, cleanFields, navigator)
 					}
 				>
 					Login
