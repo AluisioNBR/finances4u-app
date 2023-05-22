@@ -45,7 +45,7 @@ Para fazer o download do aplicativo, você pode [clicar aqui](https://expo.dev/a
         
 Ou, se estiver procurando uma versão específica você pode buscar na aba de "Releases" ou "Versões":
 
-![Releases image](assets/releases.jpeg)
+[![Releases image](assets/releases.jpeg)](https://github.com/AluisioNBR/finances4u-app/releases)
         
 <h2 id="features">📱 Funcionalidades</h2>
 
