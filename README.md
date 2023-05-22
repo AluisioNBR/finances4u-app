@@ -93,4 +93,4 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 [![Instagram Badge](https://img.shields.io/badge/-@geek.developer27-1ca0f1?style=flat-square&color=BD2C49&logo=instagram&logoColor=white&link=https://www.instagram.com/geek.developer27/)](https://www.instagram.com/geek.developer27/)
 [![Linkedin Badge](https://img.shields.io/badge/-AluisioNetto-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/aluisio-netto-1721b4225/)](https://www.linkedin.com/in/aluisio-netto-1721b4225/)
-[![Gmail Badge](https://img.shields.io/badge/-geek.developer27@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:geek.developer27@gmail.com)](mailto:geek.developer27@gmail.com)
+[![Gmail Badge](https://img.shields.io/badge/-aluisionbr333@hotmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:aluisionbr333@hotmail.com)](mailto:aluisionbr333@hotmail.com)
