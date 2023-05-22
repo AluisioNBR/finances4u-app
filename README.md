@@ -43,7 +43,7 @@ O Finanças4U foi criado para ser seu melhor amigo na hora de cuidar do seu dinh
 
 Para fazer o download do aplicativo, você pode [clicar aqui](https://expo.dev/artifacts/eas/iRdxrCXz2MqwfYwNRTeNur.apk). A versão mais atual será baixada!
         
-Ou, se estiver procurando uma versão específica você pode buscar na aba de "Releases" ou "Versões":
+Ou, se estiver procurando uma versão específica você pode [buscar](https://github.com/AluisioNBR/finances4u-app/releases) na aba de "Releases" ou "Versões":
 
 [![Releases image](assets/releases.jpeg)](https://github.com/AluisioNBR/finances4u-app/releases)
         
