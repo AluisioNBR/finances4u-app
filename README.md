@@ -1,25 +1,22 @@
-<div style="display: flex; flex-direction: column; align-items: center">
-
-<div style="display: flex; align-items: center">
+<div align="center">
   <img
-    src="assets/mini_icon.png"
+    src="assets/icon.png"
     alt="Finances4U Logo"
-    style="width: 54px; height: 54px"
+    style="width: 160px; height: 175px"
   />
-
-  <h1>
+  <h1 style="display: flex; align-items: center">
     Finanças4U
   </h1>
 </div>
 
-<p>
+<p align="center">
   A plataforma que organiza seus ganhos para o  futuro! 🚀🚀🚀
 </p>
 
-<div style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap">
+<div align="center" style="display: flex; gap: 4px; flex-wrap: wrap">
   <img src="https://img.shields.io/github/license/AluisioNBR/finances4u-app?&color=5462DB&style=for-the-badge"/>
 
-  <img src="https://img.shields.io/static/v1?label=Version&message=1.0 Beta&color=5462DB&style=for-the-badge"/>
+  <img src="https://img.shields.io/static/v1?label=Version&message=1.0.0 Beta&color=5462DB&style=for-the-badge"/>
 
   <img src="https://img.shields.io/static/v1?label=Platform&message=Android&color=42C078&style=for-the-badge"/>
   
@@ -29,13 +26,12 @@
   
   <img src="https://img.shields.io/github/issues/AluisioNBR/finances4u-app?&color=BD2C49&style=for-the-badge"/>
 </div>
-</div>
 
 <p align="center">
  <a href="#about">Sobre</a> •
+ <a href="#instalation">Instalação</a> • 
  <a href="#features">Funcionalidades</a> • 
  <a href="#techs">Tecnologias</a> •
- <a href="#license">Licença</a> • 
  <a href="#auth">Autor</a>
 </p>
 
@@ -43,6 +39,14 @@
 
 O Finanças4U foi criado para ser seu melhor amigo na hora de cuidar do seu dinheiro, sendo seu gerenciador de gastos e permitindo com que você atinja seus objetivos com a maior eficácia e eficiência possível!
 
+<h2 id="instalation">📲 Instalação</h2>
+
+Para fazer o download do aplicativo, você pode [clicar aqui](https://expo.dev/artifacts/eas/iRdxrCXz2MqwfYwNRTeNur.apk). A versão mais atual será baixada!
+        
+Ou, se estiver procurando uma versão específica você pode buscar na aba de "Releases" ou "Versões":
+
+![Releases image](assets/releases.jpeg)
+        
 <h2 id="features">📱 Funcionalidades</h2>
 
 - [x] Cadastro e login de usuário
