@@ -39,7 +39,7 @@
 
 O Finanças4U foi criado para ser seu melhor amigo na hora de cuidar do seu dinheiro, sendo seu gerenciador de gastos e permitindo com que você atinja seus objetivos com a maior eficácia e eficiência possível!
 
-Conquiste seus objetivos financeiros e transforme seus sonhos em realidade com o Finanças4U, o seu parceiro confiável para o gerenciamento inteligente de finanças! Seja qual for o seu objetivo - comprar uma casa, fazer uma viagem incrível ou garantir uma aposentadoria tranquila - nosso aplicativo é projetado para ajudá-lo a alcançá-lo de forma mais fácil e eficiente.
+Seja qual for o seu objetivo - comprar uma casa, fazer uma viagem incrível ou garantir uma aposentadoria tranquila - nosso aplicativo é projetado para ajudá-lo a alcançá-lo de forma mais fácil e eficiente.
 
 Com o Finanças4U, você terá o poder de criar metas financeiras personalizadas, adaptadas ao seu estilo de vida e necessidades únicas. Quer economizar para um carro novo? Reduzir suas dívidas? Ou talvez aumentar seu fundo de emergência? Nosso aplicativo permite que você defina metas claras e acompanhe seu progresso a cada passo do caminho.
 
