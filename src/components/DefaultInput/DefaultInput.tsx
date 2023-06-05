@@ -1,13 +1,9 @@
-import { useState } from 'react'
-import { View } from 'react-native'
-import { Text, TextInput } from 'react-native-paper'
+import { View, TextInput } from 'react-native'
+import { Text } from 'react-native-paper'
 import { DefaultInputProps } from './types/DefaultInputProps.interface'
 import { Oswald } from '../../styles/Oswald.font'
-import colors from '../../../colors'
 
 export function DefaultInput(props: DefaultInputProps) {
-	const [isFocus, setIsFocus] = useState(false)
-
 	const Label = (
 		<View>
 			<Text
@@ -27,21 +23,18 @@ export function DefaultInput(props: DefaultInputProps) {
 			{Label}
 			<TextInput
 				inputMode='text'
-				mode='outlined'
 				multiline={props.multiline ? true : false}
-				contentStyle={props.height ? { height: props.height } : {}}
-				outlineStyle={[
+				numberOfLines={props.rows}
+				autoCapitalize='none'
+				secureTextEntry={props.secure ? true : false}
+				onChangeText={(text) => props.onChange(text)}
+				style={[
+					Oswald.regular,
 					{
 						borderRadius: props.rounded ? props.rounded : 75,
-						borderColor: colors.green[2],
 					},
-					isFocus ? { borderWidth: 2 } : { borderWidth: 1 },
 				]}
-				onFocus={() => setIsFocus(true)}
-				onBlur={() => setIsFocus(false)}
-				onChangeText={(text) => props.onChange(text)}
-				style={[Oswald.regular, { flexWrap: 'wrap' }]}
-				className={`w-full text-[16px] bg-white`}
+				className='w-full text-[16px] bg-white-1 border-green-2 border-[1px] p-2'
 				value={props.children}
 			/>
 			{props.helpMessage ? (

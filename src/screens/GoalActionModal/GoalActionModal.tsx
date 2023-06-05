@@ -63,9 +63,10 @@ export function GoalActionModal() {
 				<EditInputs
 					goalName={goalName}
 					setGoalName={setGoalName}
-					goalValue={goalName}
+					goalValue={goalValue}
 					setGoalValue={setGoalValue}
 					increment={increment}
+					availableIncrement={availableIncrement}
 					setIncrement={setIncrement}
 				/>
 			) : (

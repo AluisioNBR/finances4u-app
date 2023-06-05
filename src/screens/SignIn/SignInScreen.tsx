@@ -1,18 +1,21 @@
 import { NavigationContext } from '@react-navigation/native'
 import { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, View } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 import { BigGreenButton } from '../../components/BigGreenButton'
 import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { NavLink } from '../../components/NavLink'
 import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { signIn } from './functions/signIn'
-import { passwordEncrypter } from '../../components/passwordEncrypter'
+import { ErrorMsg } from '../../components/ErrorMsg'
+import colors from '../../../colors'
 
 export function SignInScreen() {
+	const [isLoading, setIsLoading] = useState(false)
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const [passwordEncrypted, setPasswordEncrypted] = useState('')
+	const [error, setError] = useState('')
 	const navigator = useContext(NavigationContext)
 
 	useEffect(() => {
@@ -29,12 +32,6 @@ export function SignInScreen() {
 		navigator.navigate('SignUp')
 		cleanFields()
 	}
-
-	useEffect(() => {
-		let result = ''
-		for (let index = 0; index < password.length; index++) result += '*'
-		setPasswordEncrypted(result)
-	}, [password])
 
 	return (
 		<StandardScreen pos='between'>
@@ -54,21 +51,32 @@ export function SignInScreen() {
 				<DefaultInput
 					label='Senha'
 					required
-					onChange={(newText) =>
-						setPassword((prevState) => passwordEncrypter(prevState, newText))
-					}
+					secure
+					onChange={(newText) => setPassword(newText)}
 				>
-					{passwordEncrypted}
+					{password}
 				</DefaultInput>
+
+				<ErrorMsg>{error}</ErrorMsg>
 			</KeyboardAvoidingView>
 
 			<View className='items-center justify-between w-full h-32'>
 				<BigGreenButton
-					onPress={async () =>
-						await signIn(username, password, cleanFields, navigator)
-					}
+					onPress={async () => {
+						setIsLoading(true)
+						await signIn(username, password, setError, cleanFields, navigator)
+						setIsLoading(false)
+					}}
 				>
-					Login
+					{isLoading ? (
+						<ActivityIndicator
+							animating={true}
+							size={30}
+							color={colors.white[1]}
+						/>
+					) : (
+						'Login'
+					)}
 				</BigGreenButton>
 
 				<NavLink onPress={goToSignUp}>

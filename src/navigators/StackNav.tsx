@@ -42,7 +42,11 @@ export function StackNav() {
 				<Stack.Screen name='SignUp' component={SignUpScreen} />
 				<Stack.Screen name='SignIn' component={SignInScreen} />
 				<Stack.Screen name='GoalCreation' component={GoalCreationScreen} />
-				<Stack.Screen name='LoadingModal' component={LoadingModal} />
+				<Stack.Screen
+					name='LoadingModal'
+					component={LoadingModal}
+					initialParams={{ redirect: '' }}
+				/>
 			</Stack.Group>
 			<Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
 				<Stack.Screen

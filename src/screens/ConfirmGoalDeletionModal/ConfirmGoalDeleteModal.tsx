@@ -10,12 +10,10 @@ import axios from 'axios'
 import { ConfirmGoalDeleteModalParams } from './types/ConfirmGoalDeleteModalParams.interface'
 import { StandardModal } from '../../components/StandardModal'
 import { ModalStandardButtonsContainer } from '../../components/ModalStandardButtonsContainer'
-import { passwordEncrypter } from '../../components/passwordEncrypter'
 
 export function ConfirmGoalDeleteModal() {
 	const [user, setUser] = useState<User>()
 	const [password, setPassword] = useState('')
-	const [passwordEncrypted, setPasswordEncrypted] = useState('')
 
 	const navigator = useContext(NavigationContext)
 	const route = useContext(NavigationRouteContext)
@@ -35,15 +33,8 @@ export function ConfirmGoalDeleteModal() {
 		})()
 	}, [goal])
 
-	useEffect(() => {
-		let result = ''
-		for (let index = 0; index < password.length; index++) result += '*'
-		setPasswordEncrypted(result)
-	}, [password])
-
 	const cancelDelete = () => {
 		setPassword('')
-		setPasswordEncrypted('')
 		navigator.goBack()
 	}
 
@@ -68,12 +59,11 @@ export function ConfirmGoalDeleteModal() {
 			<DefaultInput
 				required
 				bold
+				secure
 				label='Confirme com sua senha'
-				onChange={(newText) =>
-					setPassword((prevState) => passwordEncrypter(prevState, newText))
-				}
+				onChange={(newText) => setPassword(newText)}
 			>
-				{passwordEncrypted}
+				{password}
 			</DefaultInput>
 
 			<ModalStandardButtonsContainer>

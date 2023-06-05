@@ -9,7 +9,6 @@ import { DefaultInput } from '../../components/DefaultInput/DefaultInput'
 import { SettingsModalParams } from './types/SettingsModalParams.interface'
 import { StandardModal } from '../../components/StandardModal'
 import { ModalStandardButtonsContainer } from '../../components/ModalStandardButtonsContainer'
-import { passwordEncrypter } from '../../components/passwordEncrypter'
 import { ErrorMsg } from '../../components/ErrorMsg'
 import { confirmAction } from './functions/confirmAction'
 
@@ -21,13 +20,11 @@ export function SettingsModal() {
 
 	const [newUsername, setNewUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const [passwordEncrypt, setPasswordEncrypted] = useState('')
 	const [error, setError] = useState('')
 
 	const cleanFields = () => {
 		setNewUsername('')
 		setPassword('')
-		setPasswordEncrypted('')
 		setError('')
 	}
 
@@ -35,12 +32,6 @@ export function SettingsModal() {
 		// @ts-ignore
 		navigator.getParent('MenuDrawer').setOptions({ swipeEnabled: false })
 	}, [])
-
-	useEffect(() => {
-		let result = ''
-		for (let index = 0; index < password.length; index++) result += '*'
-		setPasswordEncrypted(result)
-	}, [password])
 
 	return (
 		<StandardModal>
@@ -58,12 +49,11 @@ export function SettingsModal() {
 			<DefaultInput
 				required
 				bold
+				secure
 				label='Confirme com sua senha'
-				onChange={(newText) =>
-					setPassword((prevState) => passwordEncrypter(prevState, newText))
-				}
+				onChange={(newText) => setPassword(newText)}
 			>
-				{passwordEncrypt}
+				{password}
 			</DefaultInput>
 
 			<ErrorMsg>{error}</ErrorMsg>

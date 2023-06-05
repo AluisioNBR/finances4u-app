@@ -1,22 +1,17 @@
 import { View } from 'react-native'
-import Animated, { RotateInDownRight } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { LoadingBarProps } from '../types/LoadingBarProps.interface'
-import { rotateAnim } from '../data/rotateAnim'
-import { getBarColorGradient } from '../functions/getBarColorGradient'
-import { LinearGradient } from 'expo-linear-gradient'
+import { loadingAnim } from '../data/loadingAnim'
+import { getBarColor } from '../functions/getBarColorGradient'
 
-export function LoadingBar(props: LoadingBarProps) {
+export function ProgressBar(props: LoadingBarProps) {
 	return (
-		<Animated.View
-			entering={rotateAnim.duration(props.duration + 5000)}
-			className='p-8 justify-center items-center'
-		>
-			<LinearGradient
-				colors={getBarColorGradient(props.barColor)}
-				className='w-[220] h-[220] rounded-full items-center justify-center'
-			>
-				<View className='w-[200] h-[200] rounded-full items-center justify-center bg-white-1' />
-			</LinearGradient>
-		</Animated.View>
+		<View className='w-64 h-2 bg-gray-300 border-gray-300 border-2 justify-start overflow-hidden rounded-full'>
+			<Animated.View
+				entering={loadingAnim.duration(props.duration)}
+				className='p-8 justify-center items-center'
+				style={{ backgroundColor: getBarColor(props.barColor) }}
+			></Animated.View>
+		</View>
 	)
 }

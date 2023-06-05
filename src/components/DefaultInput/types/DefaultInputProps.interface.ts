@@ -1,11 +1,12 @@
 export interface DefaultInputProps {
 	label?: string
 	bold?: boolean
+	secure?: boolean
+	rows?: number
 	children: string
 	onChange: (newValue: string) => void
 	required?: boolean
 	helpMessage?: string
-	height?: string | number
 	rounded?: number
 	multiline?: boolean
 }

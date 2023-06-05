@@ -8,15 +8,12 @@ import { StandardScreen } from '../../components/StandardScreen'
 import { StandardHeader } from '../../components/StandardHeader/StandardHeader'
 import { signUp } from './functions/signUp'
 import { ErrorMsg } from '../../components/ErrorMsg'
-import { passwordEncrypter } from '../../components/passwordEncrypter'
 
 export function SignUpScreen() {
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [passwordEncrypted, setPasswordEncrypted] = useState('')
 	const [passwordConfirm, setPasswordConfirm] = useState('')
-	const [passwordConfirmEncrypted, setPasswordConfirmEncrypted] = useState('')
 	const [error, setError] = useState('')
 	const navigator = useContext(NavigationContext)
 
@@ -37,18 +34,6 @@ export function SignUpScreen() {
 		navigator.navigate('SignIn')
 		cleanFields()
 	}
-
-	useEffect(() => {
-		let result = ''
-		for (let index = 0; index < password.length; index++) result += '*'
-		setPasswordEncrypted(result)
-	}, [password])
-
-	useEffect(() => {
-		let result = ''
-		for (let index = 0; index < passwordConfirm.length; index++) result += '*'
-		setPasswordConfirmEncrypted(result)
-	}, [passwordConfirm])
 
 	return (
 		<StandardScreen pos='between'>
@@ -79,23 +64,19 @@ export function SignUpScreen() {
 				<DefaultInput
 					label='Senha'
 					required
-					onChange={(newText) =>
-						setPassword((prevState) => passwordEncrypter(prevState, newText))
-					}
+					secure
+					onChange={(newText) => setPassword(newText)}
 				>
-					{passwordEncrypted}
+					{password}
 				</DefaultInput>
 
 				<DefaultInput
 					label='Repita sua Senha'
 					required
-					onChange={(newText) =>
-						setPasswordConfirm((prevState) =>
-							passwordEncrypter(prevState, newText)
-						)
-					}
+					secure
+					onChange={(newText) => setPasswordConfirm(newText)}
 				>
-					{passwordConfirmEncrypted}
+					{passwordConfirm}
 				</DefaultInput>
 
 				<ErrorMsg>{error}</ErrorMsg>

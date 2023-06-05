@@ -1,9 +1,9 @@
 import colors from '../../../../colors'
 
-export function getBarColorGradient(color: 'green' | 'red' | 'blue') {
+export function getBarColor(color: 'green' | 'red' | 'blue') {
 	return color == 'green'
-		? [colors.green[1], colors.green[2]]
+		? colors.green[1]
 		: color == 'red'
-		? [colors.red[1], colors.red[3]]
-		: [colors.blue[0], colors.blue[1]]
+		? colors.red[1]
+		: colors.blue[0]
 }

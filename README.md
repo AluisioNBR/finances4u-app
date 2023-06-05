@@ -16,7 +16,7 @@
 <div align="center" style="display: flex; gap: 4px; flex-wrap: wrap">
   <img src="https://img.shields.io/github/license/AluisioNBR/finances4u-app?&color=5462DB&style=for-the-badge"/>
 
-  <img src="https://img.shields.io/static/v1?label=Version&message=1.0.0 Beta&color=5462DB&style=for-the-badge"/>
+  <img src="https://img.shields.io/static/v1?label=Version&message=1.0.0&color=5462DB&style=for-the-badge"/>
 
   <img src="https://img.shields.io/static/v1?label=Platform&message=Android&color=42C078&style=for-the-badge"/>
   
@@ -41,12 +41,12 @@ O Finanças4U foi criado para ser seu melhor amigo na hora de cuidar do seu dinh
 
 <h2 id="instalation">📲 Instalação</h2>
 
-Para fazer o download do aplicativo, você pode [clicar aqui](https://expo.dev/artifacts/eas/iRdxrCXz2MqwfYwNRTeNur.apk). A versão mais atual será baixada!
-        
+Para fazer o download do aplicativo, você pode [clicar aqui](https://expo.dev/artifacts/eas/kmqzXMfCdfoSBjw85KiZFF.apk). A versão mais atual será baixada!
+
 Ou, se estiver procurando uma versão específica você pode [buscar](https://github.com/AluisioNBR/finances4u-app/releases) na aba de "Releases" ou "Versões":
 
 [![Releases image](assets/releases.jpeg)](https://github.com/AluisioNBR/finances4u-app/releases)
-        
+
 <h2 id="features">📱 Funcionalidades</h2>
 
 - [x] Cadastro e login de usuário

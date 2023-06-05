@@ -20,16 +20,17 @@ export async function signUp(
 			`https://finances4u-api.bohr.io/api/signup?username=${username}&email=${email}&password=${password}`
 		)
 		userInfo.userId = data._id
+		await userInfo.setUserId(data._id)
 		navigator.navigate('LoadingModal', {
 			redirect: 'Home',
 			title: 'Cadastrando...',
 			duration: 5000,
 		})
-		await userInfo.setUserId(data._id)
 		cleanFields()
 	} catch (error) {
-		if (error.message.split(' ').at(-1) == '400')
+		const errObj = error.toJSON()
+		if (errObj.code == 'ERR_BAD_REQUEST')
 			setError('Este email já está cadastrado!')
-		else setError(error.message)
+		else setError('Algo deu errado, por favor tente novamente!')
 	}
 }

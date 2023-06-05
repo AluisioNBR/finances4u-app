@@ -55,7 +55,7 @@ export function SupportScreen() {
 					<DefaultInput
 						label='Dúvida'
 						bold
-						height={200}
+						rows={8}
 						rounded={24}
 						multiline
 						onChange={(newValue) => setCustomDoubt(newValue)}

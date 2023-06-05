@@ -58,7 +58,7 @@ export function SugestionsScreen() {
 					multiline
 					bold
 					required
-					height={200}
+					rows={10}
 					rounded={24}
 					onChange={(newValue) => setSugestion(newValue)}
 				>

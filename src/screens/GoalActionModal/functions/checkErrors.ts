@@ -7,6 +7,14 @@ export function checkErrors(
 	availableIncrement: number,
 	availableBalance: number
 ) {
+	console.log(`Available increment: ${availableIncrement}`)
+	console.log(
+		`Name is empty: ${goalName == ''}\nGoal value is NAN: ${isNaN(
+			parseFloat(goalValue)
+		)}\nIncrement is NAN: ${isNaN(parseInt(increment))}\nIncrement is bigger: ${
+			parseInt(increment) > availableIncrement
+		}`
+	)
 	if (
 		type == 'edit' &&
 		(goalName == '' ||

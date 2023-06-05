@@ -1,5 +1,5 @@
 export interface ButtonProps {
-	children: string
+	children: string | JSX.Element
 	color?: 'blue' | 'green' | 'red'
 	width?: number | string
 	onPress?: () => void

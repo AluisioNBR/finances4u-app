@@ -46,7 +46,7 @@ export function BigGreenButton(props: ButtonProps) {
 			onPress={press}
 		>
 			<Text
-				className='text-[24px] text-white-1 text-center'
+				className='text-[24px] text-white-1 text-center py-1'
 				style={Oswald.medium}
 			>
 				{props.children}

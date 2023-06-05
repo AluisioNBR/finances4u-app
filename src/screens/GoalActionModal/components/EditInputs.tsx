@@ -1,14 +1,5 @@
-import { Dispatch } from 'react'
 import { DefaultInput } from '../../../components/DefaultInput/DefaultInput'
-
-interface EditInputsProps {
-	goalName: string
-	setGoalName: Dispatch<string>
-	goalValue: string
-	setGoalValue: Dispatch<string>
-	increment: string
-	setIncrement: Dispatch<string>
-}
+import { EditInputsProps } from '../types/EditInputsProps.interface'
 
 export function EditInputs(props: EditInputsProps) {
 	const {
@@ -17,6 +8,7 @@ export function EditInputs(props: EditInputsProps) {
 		goalValue,
 		setGoalValue,
 		increment,
+		availableIncrement,
 		setIncrement,
 	} = props
 
@@ -48,6 +40,7 @@ export function EditInputs(props: EditInputsProps) {
 				bold
 				label='Qual a taxa de incremento ?'
 				onChange={(newText) => setIncrement(newText)}
+				helpMessage={`Taxa disponível: ${availableIncrement}%`}
 			>
 				{increment}
 			</DefaultInput>

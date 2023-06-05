@@ -9,6 +9,7 @@ export function GoalActionButtons(
 	navigate: (route: string, params: any) => void,
 	setDate: Dispatch<Date>
 ): ActionButtonProps[] {
+	console.log(incrementRateAvailable)
 	return [
 		{
 			children: 'Adicionar',
